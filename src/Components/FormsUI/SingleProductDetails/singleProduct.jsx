@@ -1,8 +1,5 @@
 import { Box, Grid, Paper } from "@material-ui/core";
-import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
 import {
-  Card,
-  CardMedia,
   Rating,
   Typography,
 } from "@mui/material";
@@ -30,7 +27,7 @@ const Post = ({data}) => {
           Rating :
         </Typography>
 
-        <Rating name="read-only" value={data.rating} readOnly sx={{ml:'20px',ml:'20px'}}/>
+        <Rating name="read-only" value={data.rating} readOnly sx={{ml:'20px'}}/>
         <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
           Available Colors :
           </Typography>

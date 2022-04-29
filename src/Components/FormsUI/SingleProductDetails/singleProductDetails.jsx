@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import { doc ,getDoc} from "firebase/firestore"; 
 import {db} from "../../../config/Firebase/firebase"
 import { useParams } from "react-router-dom";
@@ -17,7 +12,12 @@ export default function SingleProductDetails() {
   const [loading, setLoading] = useState(false);
 
   let { id } = useParams();
+
     
+
+    useEffect(() => {
+      // declare the data fetching function
+       if(id){
 const handelFetch = async() => {
   setLoading(true)
     const docRef = doc(db, "shop", id);
@@ -34,15 +34,12 @@ const handelFetch = async() => {
     }
     
     };
-
-    useEffect(()=>{
-        if(id){
-            handelFetch()
-
-        }
-    },[])
-
-    console.log('data',data)
+      // call the function
+      handelFetch()
+        // make sure to catch any error
+        .catch(console.error);
+  }
+    }, [id])
 
   return (
     <PageWrapper>

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Formik, Form, FieldArray,useField } from "formik";
-import * as Yup from "yup";
+import React from "react";
+import { Formik, Form, FieldArray} from "formik";
+// import * as Yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Paper } from "@material-ui/core";
 import Textfield from "../Textfield";
@@ -9,7 +9,6 @@ import Inputfield from "../Inputfield";
 import Select from "../Select";
 import Button from "../Button";
 import FormButton from "../DynamicButton";
-import {  ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection,  addDoc } from "firebase/firestore"; 
 import {db} from '../../../config/Firebase/firebase';
 
@@ -43,42 +42,37 @@ const INITIAL_FORM_STATE = {
   loader:false
 };
 
-const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg", "image/gif"];
+// const SUPPORTED_FORMATS = ["image/jpg", "image/png", "image/jpeg", "image/gif"];
 
-const FORM_VALIDATION = Yup.object().shape({
-  name: Yup.string()
-    .typeError("Please enter a valid phone number")
-    .required("Required"),
-  price: Yup.number().integer().required("Required"),
-  quantity: Yup.number()
-    .integer()
-    .typeError("Please enter a valid phone number")
-    .required("Required"),
+// const FORM_VALIDATION = Yup.object().shape({
+//   name: Yup.string()
+//     .typeError("Please enter a valid phone number")
+//     .required("Required"),
+//   price: Yup.number().integer().required("Required"),
+//   quantity: Yup.number()
+//     .integer()
+//     .typeError("Please enter a valid phone number")
+//     .required("Required"),
 
-  description: Yup.string().required("Required"),
-
-  //   colors: Yup.string().when("colors", {
-  // 	is: (colors) => colors.length > 0,
-  // 	then: Yup.array().required('I am required now the checkbox is checked')
-  // }),
-  colors: Yup.array()
-    .of(
-      Yup.string("String is Required!")
-        .min(4, "Too Short")
-        .max(20, "Too Long")
-        .required("Required")
-    )
-    .min(1, "Atleast One Social Media is Required!")
-    .required("Required"),
-  file: Yup.mixed()
-    .nullable()
-    .required("Required Field")
-    .test(
-      "type",
-      "Invalid file format selection",
-      (value) => !value || (value && SUPPORTED_FORMATS.includes(value?.type))
-    ),
-});
+//   description: Yup.string().required("Required"),
+//   colors: Yup.array()
+//     .of(
+//       Yup.string("String is Required!")
+//         .min(4, "Too Short")
+//         .max(20, "Too Long")
+//         .required("Required")
+//     )
+//     .min(1, "Atleast One Social Media is Required!")
+//     .required("Required"),
+//   file: Yup.mixed()
+//     .nullable()
+//     .required("Required Field")
+//     .test(
+//       "type",
+//       "Invalid file format selection",
+//       (value) => !value || (value && SUPPORTED_FORMATS.includes(value?.type))
+//     ),
+// });
 
 
 const quantity={1:"1",2:"2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10"}
@@ -109,7 +103,7 @@ async function  handelclick(values) {
     discountPrice:values.discountPrice
     // file:values.file
  }
-    const res =await addDoc(collection(db, "shop"), record);
+    await addDoc(collection(db, "shop"), record);
     data.push(record);
     setRecords(data);    
     setOpenPopup(false)

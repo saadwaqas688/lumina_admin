@@ -1,42 +1,16 @@
-
-//   import { Box } from "@material-ui/core";
-// import React from "react";
-// import PageWrapper from "../../../PageWrapper";
-  
-//   const ManageAdminUsers = () => {
-//     return (
-
-//         <PageWrapper>
-// <Box flex={4} p={{ xs: 0, md: 2 }}>
-
-//     <h1>ManageAdminUsers</h1>
-//     </Box>
-//     </PageWrapper>
-
-//     );
-//   };
-  
-//   export default ManageAdminUsers;
-  import React, { useEffect, useState } from 'react'
-import { Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment, Avatar, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
+import { Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment, Typography } from '@material-ui/core';
 import useTable from "../Table/useTable";
 import Controls from '../controls/Controls';
-import FormikForm from '../Product/addProduct';
 import Popup from '../Popup/Popup';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import Search from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import CircularIndeterminate from '../Loader';
 import { collection ,getDocs,deleteDoc,doc} from "firebase/firestore"; 
 import {db} from "../../../config/Firebase/firebase"
 import { Box, Skeleton, Stack } from '@mui/material';
-import { Link as RouterLink} from "react-router-dom";
 import PageWrapper from '../../../PageWrapper';
-import { textAlign } from '@mui/system';
-import Button from '../controls/Button';
-import ActionButton from '../controls/ActionButton';
 import AddAdminUser from './addAdminUser';
+import { Search } from '@mui/icons-material';
 
 
 
@@ -77,11 +51,7 @@ export default function ManageAdminUsers() {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(pages[page])
     const [openPopup, setOpenPopup] = useState(false)
-    const [recordForEdit, setRecordForEdit] = useState(null)
     const [loading, setLoading] = useState(false)
-
-    // console.log('filterFn',filterFn)
-    // console.log('records',records)
     const items=searchResult?searchResult:records;
 
     const {
@@ -99,7 +69,7 @@ export default function ManageAdminUsers() {
 
         setFilterFn({
             fn: items => {
-                if (target.value == "")
+                if (target.value ==="")
                     return items;
                 else{
                    
@@ -147,18 +117,13 @@ export default function ManageAdminUsers() {
       const handelDelete = async (id) => {
         await deleteDoc(doc(db, "adminUsers", id));
       
-        const result =records.filter((item)=>item.id!=id)
+        const result =records.filter((item)=>item.id!==id)
       
         setRecords(result)
       
         console.log('result++++',result)
       
       };
-
-    const openInPopup = item => {
-        setRecordForEdit(item)
-        setOpenPopup(true)
-    }
     console.log('records',records)
     return (
         <PageWrapper>
@@ -173,7 +138,6 @@ export default function ManageAdminUsers() {
         </Stack>):
         <>
             <Paper className={classes.pageContent}>
-                {/* <EmployeeForm /> */}
                 <Toolbar>
                     <Controls.Input
                         label="Search Product"

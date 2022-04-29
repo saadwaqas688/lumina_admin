@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment, Avatar, Typography } from '@material-ui/core';
+import { Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment,Typography } from '@material-ui/core';
 import useTable from "../Table/useTable";
 import Controls from '../controls/Controls';
 import FormikForm from '../Product/addProduct';
@@ -8,14 +8,11 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Search from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import CircularIndeterminate from '../Loader';
 import { collection ,getDocs,deleteDoc,doc} from "firebase/firestore"; 
 import {db} from "../../../config/Firebase/firebase"
 import { Box, Skeleton, Stack } from '@mui/material';
 import { Link as RouterLink} from "react-router-dom";
 import PageWrapper from '../../../PageWrapper';
-import { textAlign } from '@mui/system';
-import Button from '../controls/Button';
 import ActionButton from '../controls/ActionButton';
 
 
@@ -81,7 +78,7 @@ export default function ProductDetails() {
 
         setFilterFn({
             fn: items => {
-                if (target.value == "")
+                if (target.value === "")
                     return items;
                 else{
                    
@@ -127,7 +124,7 @@ export default function ProductDetails() {
       const handelDelete = async (id) => {
         await deleteDoc(doc(db, "shop", id));
       
-        const result =records.filter((item)=>item.id!=id)
+        const result =records.filter((item)=>item.id!==id)
       
         setRecords(result)
       

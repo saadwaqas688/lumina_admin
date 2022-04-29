@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from "../../../config/Firebase/firebase";
-import { Grid,Paper, Avatar, TextField, Button} from '@material-ui/core'
+import { Grid,Paper, Avatar, TextField} from '@material-ui/core'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ActionButton from '../controls/ActionButton';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login=()=>{
     const paperStyle={padding :50,height:'60vh',width:280, margin:"70px auto"}
     const avatarStyle={backgroundColor:'#ff6699'}
-    const btnstyle={margin:'8px 0'}
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();  
@@ -32,9 +30,10 @@ function handlePassword(e){
     })
     .catch((error) => {
       alert(error.message)
-      const errorCode = error.code;
+      // const errorCode = error.code;
       const errorMessage = error.message;
       console.log('error',error.message)
+      alert(errorMessage)
     });
 }
       

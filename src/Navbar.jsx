@@ -1,10 +1,9 @@
-import { Mail, Notifications, Pets } from "@mui/icons-material";
+import { Mail, Notifications } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
   Badge,
   Box,
-  InputBase,
   Menu,
   MenuItem,
   styled,
@@ -18,12 +17,12 @@ const StyledToolbar = styled(Toolbar)({
   justifyContent: "space-between",
 });
 
-const Search = styled("div")(({ theme }) => ({
-  backgroundColor: "white",
-  padding: "0 10px",
-  borderRadius: theme.shape.borderRadius,
-  width: "40%",
-}));
+// const Search = styled("div")(({ theme }) => ({
+//   backgroundColor: "white",
+//   padding: "0 10px",
+//   borderRadius: theme.shape.borderRadius,
+//   width: "40%",
+// }));
 
 const Icons = styled(Box)(({ theme }) => ({
   display: "none",

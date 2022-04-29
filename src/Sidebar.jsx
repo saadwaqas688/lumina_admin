@@ -3,7 +3,6 @@ import {
   Article,
   Group,
   Home,
-  ModeNight,
   Person,
   Settings,
   Storefront,
@@ -15,7 +14,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Switch,
 } from "@mui/material";
 import React from "react";
 

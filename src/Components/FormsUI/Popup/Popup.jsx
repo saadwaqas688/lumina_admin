@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Popup(props) {
 
-    const { title, children, openPopup, setOpenPopup } = props;
+    const { title, children, openPopup,handleModal} = props;
     const classes = useStyles();
 
     return (
@@ -31,7 +31,7 @@ export default function Popup(props) {
                     </Typography>
                     <Controls.ActionButton
                         color="secondary"
-                        onClick={()=>{setOpenPopup(false)}}>
+                        onClick={handleModal}>
                         <CloseIcon fontSize="small" />
 
                     </Controls.ActionButton>

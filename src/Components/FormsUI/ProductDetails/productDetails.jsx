@@ -90,7 +90,12 @@ export default function ProductDetails() {
 
     }
 
+ function handleModal(){
+    setRecordForEdit('')
+    setOpenPopup(!openPopup)
 
+
+}
     const handelFetch = async() => {
         setLoading(true)
         let list=[];
@@ -231,14 +236,18 @@ export default function ProductDetails() {
             <Popup
                 title="Product"
                 openPopup={openPopup}
-                setOpenPopup={setOpenPopup}
+                // setOpenPopup={setOpenPopup}
+                handleModal={handleModal}
+
             >
                 <FormikForm
                     records={records}
                     setRecords={setRecords}
+                    handleModal={handleModal}
                     recordForEdit={recordForEdit}
+                    // setRecordForEdit={setRecordForEdit}
                     // addOrEdit={addOrEdit} 
-                    setOpenPopup={setOpenPopup}
+                    // setOpenPopup={setOpenPopup}
 
                     />
             </Popup>

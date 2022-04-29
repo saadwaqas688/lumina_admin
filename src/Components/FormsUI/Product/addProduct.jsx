@@ -75,7 +75,7 @@ const INITIAL_FORM_STATE = {
 // });
 
 const quantity={1:"1",2:"2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10"}
-const FormikForm = ({recordForEdit,setOpenPopup,records,setRecords
+const FormikForm = ({recordForEdit,records,setRecords,handleModal
 
 }) => {
   console.log('recordForEdit',recordForEdit)
@@ -94,7 +94,7 @@ async function  handelclick(values) {
   const record={
     colors:values.colors,
     description:values.description,
-    image:values.imageUrl,
+    image:values.imageUrl?values.imageUrl:values.image,
     likedBy:[], 
     name:values.name, 
     numberOfViews:[],
@@ -107,9 +107,7 @@ async function  handelclick(values) {
     await addDoc(collection(db, "shop"), record);
     data.push(record);
     setRecords(data);    
-    setOpenPopup(false)
-
-
+    handleModal()
   }
   return (
     <Paper className={classes.formWrapper}>
@@ -218,7 +216,10 @@ async function  handelclick(values) {
 
                       <Grid item xs={12}>
                         <Inputfield name="file" />
-                        {/* <PreviewImage /> */}
+                        {recordForEdit && (!values.loader && !values.file)?
+                        <PreviewImage url={recordForEdit.image} />:
+                        <></>
+                        }
 
                         {values.loader?<h1>Loading.....</h1> : 
                         values.file ?

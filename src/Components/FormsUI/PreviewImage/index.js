@@ -30,25 +30,32 @@
 
 import React from 'react';
 
-const PreviewImage = ({file}) => {
+const PreviewImage = ({file,url}) => {
 
-  const [preview, setPreview] = React.useState(null);
+  const [preview, setPreview] = React.useState(null)
+  if(url){
+    console.log('i am called')
 
-  const reader = new FileReader();
+  }else{
+    const reader = new FileReader();
 
-  reader.readAsDataURL(file);
-
-  reader.onload = () => {
-
-    setPreview(reader.result);
-
+    reader.readAsDataURL(file);
+  
+    reader.onload = () => {
+  
+      setPreview(reader.result);
+  
+    }
   }
+
+  
+  console.log('preview',preview)
 
   return (
 
     <div className='text-center'>
 
-      <img src={preview} alt="Preview" width='100' height='100' />
+      <img src={url?url:preview} alt="Preview" width='100' height='100' />
 
     </div>
 

@@ -74,12 +74,13 @@ const INITIAL_FORM_STATE = {
 //     ),
 // });
 
-
 const quantity={1:"1",2:"2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10"}
 const FormikForm = ({recordForEdit,setOpenPopup,records,setRecords
 
 }) => {
   console.log('recordForEdit',recordForEdit)
+  const initialValues=recordForEdit?recordForEdit:INITIAL_FORM_STATE;
+
   const classes = useStyles();
 //   const [field] = useField(INITIAL_FORM_STATE.file);
 
@@ -118,7 +119,8 @@ async function  handelclick(values) {
             <div>
               <Formik
                 initialValues={{
-                  ...INITIAL_FORM_STATE
+                  ...initialValues
+                  
                 }}
                 // validationSchema={FORM_VALIDATION}
                 onSubmit={(values) => handelclick(values)

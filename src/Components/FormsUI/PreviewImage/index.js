@@ -30,7 +30,7 @@
 
 import React from 'react';
 
-const PreviewImage = ({file,url}) => {
+const PreviewImage = ({url,file}) => {
 
   const [preview, setPreview] = React.useState(null)
   if(url){
@@ -49,15 +49,16 @@ const PreviewImage = ({file,url}) => {
   }
 
   
-  console.log('preview',preview)
+  // console.log('preview',preview)
 
   return (
-
+    <>
     <div className='text-center'>
 
       <img src={url?url:preview} alt="Preview" width='100' height='100' />
 
     </div>
+    </>
 
   )
 

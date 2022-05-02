@@ -123,8 +123,10 @@ export default function ProductDetails() {
     },[searchTerm])
 
     useEffect(()=>{
+        if(!openPopup){
         handelFetch()
-       },[ ])
+        }
+       },[ openPopup])
       
       const handelDelete = async (id) => {
         await deleteDoc(doc(db, "shop", id));

@@ -14,7 +14,7 @@ const ButtonWrapper = ({
 
   const configButton = {
     variant: 'contained',
-    color: 'primary',
+    // color: 'pink',
     fullWidth: true,
     onClick: handleSubmit
   }

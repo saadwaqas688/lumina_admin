@@ -8,7 +8,8 @@ import {
   Storefront,
 } from "@mui/icons-material";
 import {
-  Box,
+  // Box,
+  // Paper,
   List,
   ListItem,
   ListItemButton,
@@ -16,11 +17,14 @@ import {
   ListItemText,
 } from "@mui/material";
 import React from "react";
+import {useLocation} from 'react-router';
+
 
 const Sidebar = ({mode,setMode}) => {
+  const { pathname } = useLocation();
   return (
-    <Box flex={1} p={4} sx={{ display: { xs: "none", sm: "none",md:"block" } ,bgcolor: 'background.paper',margin:'10',minHeight:'100vh'}}>
-      <Box position="fixed"  >
+    // <Box flex={1}  sx={{ display: { sm: "none",md:"block" } ,margin:'10',minHeight:'100vh'}}>
+    //   <Paper  elevation={6} sx={{mt:'30px',position:'fixed'}}>
         <List >
           <ListItem >
             <ListItemButton component="a" href="#home">
@@ -30,8 +34,8 @@ const Sidebar = ({mode,setMode}) => {
               <ListItemText sx={{color:"purple"}} primary="Meal" />
             </ListItemButton>
           </ListItem>
-          <ListItem >
-            <ListItemButton component="a" href="/AdminUsers">
+          <ListItem  >
+            <ListItemButton component="a" href="/AdminUsers" selected={pathname==='/AdminUsers'?true:false}>
               <ListItemIcon >
                 <AccountBox sx={{color:'#ff6699' , fontSize:'40px'}} />
               </ListItemIcon>
@@ -70,8 +74,8 @@ const Sidebar = ({mode,setMode}) => {
               <ListItemText sx={{color:"purple"}} primary="Orders" />
             </ListItemButton>
           </ListItem>
-          <ListItem  selected={true} >
-            <ListItemButton component="a" href="/shop">
+          <ListItem  >
+            <ListItemButton component="a" href="/shop"  selected={pathname==='/shop'?true:false}>
               <ListItemIcon>
                 <Settings sx={{color:'#ff6699' , fontSize:'40px'}}/>
               </ListItemIcon>
@@ -103,8 +107,8 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
         </List>
-      </Box>
-    </Box>
+    //   </Paper>
+    // </Box>
   );
 };
 

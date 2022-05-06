@@ -4,16 +4,16 @@ import useTable from "../Table/useTable";
 import Controls from '../controls/Controls';
 import FormikForm from '../Product/addProduct';
 import Popup from '../Popup/Popup';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Search from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 import { collection ,getDocs,deleteDoc,doc} from "firebase/firestore"; 
 import {db} from "../../../config/Firebase/firebase"
 import { Box, Skeleton, Stack } from '@mui/material';
 import { Link as RouterLink} from "react-router-dom";
 import PageWrapper from '../../../PageWrapper';
 import ActionButton from '../controls/ActionButton';
+import EditIcon from '../controls/EditIcon';
+import DeleteIcon from '../controls/DeleteIcon';
 
 
 
@@ -134,9 +134,7 @@ export default function ProductDetails() {
         const result =records.filter((item)=>item.id!==id)
       
         setRecords(result)
-      
-        console.log('result++++',result)
-      
+            
       };
 
     const openInPopup = item => {
@@ -156,7 +154,6 @@ export default function ProductDetails() {
         </Stack>):
         <>
             <Paper className={classes.pageContent}>
-                {/* <EmployeeForm /> */}
                 <Toolbar>
                     <Controls.Input
                         label="Search Product"
@@ -215,17 +212,15 @@ export default function ProductDetails() {
                                      </RouterLink>
                                     </TableCell>
                                     <TableCell>
-                                        <Controls.ActionButton
-                                            color="primary"
-                                            onClick={() => { openInPopup(item) }}>
-                                            <EditOutlinedIcon fontSize="small" />
-                                        </Controls.ActionButton>
-                                        <Controls.ActionButton
-                                            color="secondary"
-                                            onClick={() => { handelDelete(item.id) }}  
-                                            >
-                                            <CloseIcon fontSize="small"/>
-                                        </Controls.ActionButton>
+                                    <EditIcon  
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={() => { openInPopup(item) }} />
+                                        <DeleteIcon
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => { handelDelete(item.id) }}  
+                                         />
                                     </TableCell>
 
                                 </TableRow>)

@@ -7,11 +7,10 @@ import Textfield from "../Textfield";
 import PreviewImage from "../PreviewImage";
 import Inputfield from "../Inputfield";
 import Select from "../Select";
-import Button from "../Button";
-import FormButton from "../DynamicButton";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { db, storage } from "../../../config/Firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import ActionButton from "../controls/ActionButton";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiFormControl-root": {
@@ -51,7 +50,7 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
     discountPrice: "",
     quantity: "",
     description: "",
-    colors: ["Orange"],
+    colors: [" "],
     file: null,
     imageUrl: "",
     loader: false,
@@ -66,6 +65,7 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
         .typeError("Please enter a valid phone number")
         .required("Required"),
       price: Yup.number().integer().required("Required"),
+      discountPrice: Yup.number().integer().required("Required"), 
       quantity: Yup.number()
         .integer()
         .typeError("Please enter a valid phone number")
@@ -91,6 +91,7 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
         .typeError("Please enter a valid phone number")
         .required("Required"),
       price: Yup.number().integer().required("Required"),
+      discountPrice: Yup.number().integer().required("Required"), 
       quantity: Yup.number()
         .integer()
         .typeError("Please enter a valid phone number")
@@ -229,7 +230,7 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
                 }}
                 validationSchema={FORM_VALIDATION}
                 onSubmit={(values) => handelclick(values)}
-                render={({ values, errors, touched }) => (
+                render={({ values, errors, touched,submitForm}) => (
                   <Form>
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
@@ -291,20 +292,30 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
                                 </>
                               )}
                               <>
-                                {values.colors.length > 0 && (
-                                  <FormButton
-                                    style={{ marginRight: "10px" }}
-                                    color="secondary"
-                                    onClick={() =>
+                                {values.colors.length > 1 && (
+                                  // <FormButton
+                                  //   style={{ marginRight: "10px" }}
+                                  //   color="secondary"
+                                  //   onClick={() =>
+                                  //     arrayHelpers.remove(
+                                  //       values.colors.length - 1
+                                  //     )
+                                  //   }
+                                  // >
+                                  //   Remove color
+                                  // </FormButton>
+                                  <ActionButton  style={{ marginRight: "10px" }}
+                                  variant="contained"  color="primary" size='small'
+                                     onClick={() =>
                                       arrayHelpers.remove(
                                         values.colors.length - 1
                                       )
-                                    }
-                                  >
-                                    Remove color
-                                  </FormButton>
+                                    } 
+                                   >
+                                       Remove Color
+                                    </ActionButton>
                                 )}
-                                <FormButton
+                                {/* <FormButton
                                   onClick={() =>
                                     arrayHelpers.insert(
                                       values.colors.length,
@@ -313,7 +324,17 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
                                   }
                                 >
                                   Add Color
-                                </FormButton>
+                                </FormButton> */}
+                                  <ActionButton variant="contained"  color="primary"  
+                                    size='small'
+                                     onClick={() =>
+                                    arrayHelpers.insert(
+                                      values.colors.length,
+                                      ""
+                                    )
+                                  } >
+                                       Add Color
+                                    </ActionButton>
                               </>
                             </div>
                           )}
@@ -323,7 +344,6 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
 
                       {
                         <Grid item xs={12}>
-                          <Inputfield name="file" setEditMode={setEditMode} />
                           {recordForEdit && editMode ? (
                             <PreviewImage url={recordForEdit.image} />
                           ) : values.file && values.file[2] ? (
@@ -331,13 +351,22 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
                           ) : (
                             <></>
                           )}
+                          <Inputfield name="file" setEditMode={setEditMode} />
                         </Grid>
                       }
 
                       <Grid item xs={12}>
-                        <Button>
+                      <ActionButton variant="contained"  color="primary"  
+                                    fullWidth
+                                     onClick={() =>submitForm()
+                                   
+                                  } >
+                       {loader ? "Please Wait..." : "Submit Form"}
+
+                                    </ActionButton>
+                        {/* <Button>
                           {loader ? "Please Wait..." : "Submit Form"}
-                        </Button>
+                        </Button> */}
                       </Grid>
                     </Grid>
                   </Form>

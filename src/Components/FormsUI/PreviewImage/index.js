@@ -52,14 +52,15 @@ const PreviewImage = ({url,file}) => {
   // console.log('preview',preview)
 
   return (
-    <>
-    <div className='text-center'>
+    <div>
 
-      <img src={url?url:preview} alt="Preview" width='100' height='100' />
+      <img src={url?url:preview} alt="Preview" 
+      width="80%" 
+      height="400px" 
+      style={{marginTop:"10px",marginBottom:"10px",marginLeft:"5px",borderRadius:"10px",objectFit:"fill"}}     
+      />
 
     </div>
-    </>
-
   )
 
 }

@@ -1,11 +1,6 @@
 import React from 'react'
 import { Dialog, DialogTitle, DialogContent, makeStyles, Typography } from '@material-ui/core';
-import Controls from '../controls/Controls';
-import CloseIcon from '@mui/icons-material/Close';
-
-// import Controls from "./controls/Controls";
-// import CloseIcon from '@material-ui/icons/Close';
-
+import DeleteIcon from '../controls/DeleteIcon';
 const useStyles = makeStyles(theme => ({
     dialogWrapper: {
         padding: theme.spacing(2),
@@ -29,12 +24,11 @@ export default function Popup(props) {
                     <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
                         {title}
                     </Typography>
-                    <Controls.ActionButton
-                        color="secondary"
-                        onClick={handleModal}>
-                        <CloseIcon fontSize="small" />
-
-                    </Controls.ActionButton>
+                    <DeleteIcon 
+                         variant="contained"
+                         color="primary"
+                      onClick={handleModal}
+                    />
                 </div>
             </DialogTitle>
             <DialogContent dividers>

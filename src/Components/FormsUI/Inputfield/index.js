@@ -1,6 +1,6 @@
 import React from 'react';
 import { useField, useFormikContext } from 'formik';
-import { Button } from '@material-ui/core';
+import ActionButton from '../controls/ActionButton';
 const TextfieldWrapper = ({
   name,
   setEditMode,
@@ -41,9 +41,9 @@ const TextfieldWrapper = ({
 {configTextfield.error && <div>{configTextfield.helperText}</div>}
 
 <label htmlFor="raised-button-file">
-  <Button variant="raised" component="span" >
-    Upload
-  </Button>
+    <ActionButton variant="outlined"  component="span">
+       Upload Image
+     </ActionButton>
 </label> 
 
     </>

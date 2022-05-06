@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword} from "firebase/auth";
 import {auth, db} from "../../../config/Firebase/firebase";
-import { addDoc,collection, serverTimestamp} from "firebase/firestore"; 
+import {  doc, serverTimestamp, setDoc} from "firebase/firestore"; 
 import { Grid,Paper, TextField} from '@material-ui/core'
 import ActionButton from '../controls/ActionButton';
 
@@ -17,11 +17,18 @@ const AddAdminUser=({setOpenPopup})=>{
     setPassword(e.target.value)
   }
   
+  
   function submit(e){
     e.preventDefault()
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-     return addDoc(collection(db, "adminUsers"), {email:userCredential.user.email,id:userCredential.user.uid,time:serverTimestamp()});
+      return    setDoc(doc(db, "cities", userCredential.user.uid), {
+        email: userCredential.user.email,
+        state: "CA",
+        country: "USA",
+        time:serverTimestamp()
+      });
+    //  return addDoc(collection(db, "adminUsers"), {email:userCredential.user.email,id:userCredential.user.uid,time:serverTimestamp()});
     }).then((data)=>{
       setOpenPopup(false)
       console.log('data',data)

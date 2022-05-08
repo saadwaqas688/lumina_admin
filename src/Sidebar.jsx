@@ -51,7 +51,7 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
           <ListItem >
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="a" href="/users">
               <ListItemIcon>
                 <Group sx={{color:'#ff6699' , fontSize:'40px'}}/>
               </ListItemIcon>

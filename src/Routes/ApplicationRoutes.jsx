@@ -4,10 +4,12 @@ import {
     Routes,
     Route,
   } from "react-router-dom";
-import SingleProductDetails from "../Components/FormsUI/SingleProductDetails/singleProductDetails";
-import ProductDetails from "../Components/FormsUI/ProductDetails/productDetails"
-import ManageAdminUsers from "../Components/FormsUI/AdminUsers/manageAdminUsers";
 import Login from "../Components/FormsUI/Login/login";
+import ViewAllUsers from "../Components/FormsUI/Users/viewAllUsers";
+import SingleUser from "../Components/FormsUI/Users/singleUser";
+import SingleProduct from "../Components/FormsUI/Product/singleProduct";
+import ProductDetails from "../Components/FormsUI/Product/productDetails";
+import ViewAllAdminUsers from "../Components/FormsUI/AdminUsers/viewAllAdminUsers";
 const ApplicationRoutes = () => {
 //   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
@@ -15,9 +17,13 @@ const ApplicationRoutes = () => {
     <>
     <BrowserRouter>
     <Routes>
-      <Route path="/shop/:id" element={<SingleProductDetails />} />
+      <Route path="/shop/:id" element={<SingleProduct />} />
       <Route path="/shop" element={<ProductDetails/>} />
-      <Route path="/adminUsers" element={<ManageAdminUsers/>} />
+      <Route path="/adminUsers" element={<ViewAllAdminUsers/>} />
+      <Route path="/Users" element={<ViewAllUsers/>} />
+      <Route path="/Users/:id" element={<SingleUser/>} />
+
+
       <Route path="/" element={<Login/>} />
 
     </Routes>

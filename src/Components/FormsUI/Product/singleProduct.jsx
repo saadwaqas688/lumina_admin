@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import PageWrapper from '../../../PageWrapper';
 import { Box } from '@material-ui/core';
 import { Skeleton, Stack } from '@mui/material';
-import SingleProduct from './singleProduct';
+import SingleProductDetails from './singleProductDetails';
 
-export default function SingleProductDetails() {
+export default function SingleProduct() {
   const [data,setData]=useState()
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +53,7 @@ const handelFetch = async() => {
         </Stack>
       ) : (
         <>{ data ?
-          <SingleProduct data={data}/>:<></>
+          <SingleProductDetails data={data}/>:<></>
         }
         </>
       )}

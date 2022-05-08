@@ -1,5 +1,4 @@
-import { collection ,getDocs,deleteDoc,doc} from "firebase/firestore"; 
-import {db} from "../firebase"
+
 export function getAllProductDetails() {
     return [
 {
@@ -454,34 +453,34 @@ export function getAllProductDetails() {
 
 }
 
-export   function  getAllShopItems()  {
-    let list=[];
-    let myPromise = new Promise(function(myResolve, myReject) {      
-        const querySnapshot =  getDocs(collection(db, "shop"));
-        if (querySnapshot) {
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                list.push({id:doc.id,...doc.data()})
+// export   function  getAllShopItems()  {
+//     let list=[];
+//     let myPromise = new Promise(function(myResolve, myReject) {      
+//         const querySnapshot =  getDocs(collection(db, "shop"));
+//         if (querySnapshot) {
+//             querySnapshot.forEach((doc) => {
+//                 // doc.data() is never undefined for query doc snapshots
+//                 list.push({id:doc.id,...doc.data()})
               
               
-                // console.log(doc.id, " => ", doc.data());
-              });    
-         console.log('list',list)
-          myResolve(list);
-        } else {
-          myReject("Error");
-        }
-      });
+//                 // console.log(doc.id, " => ", doc.data());
+//               });    
+//          console.log('list',list)
+//           myResolve(list);
+//         } else {
+//           myReject("Error");
+//         }
+//       });
   
-      myPromise.
-      then(function (data) {
-       return data
-      }).
-      catch(function (error) {
-          console.log('Some error has occurred',error);
-      });  
-//   setLoader(true)
-//   setRecords(list)
-//   setLoader(false)
+//       myPromise.
+//       then(function (data) {
+//        return data
+//       }).
+//       catch(function (error) {
+//           console.log('Some error has occurred',error);
+//       });  
+// //   setLoader(true)
+// //   setRecords(list)
+// //   setLoader(false)
 
-  };
+//   };

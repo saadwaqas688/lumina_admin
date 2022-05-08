@@ -22,10 +22,10 @@ const AddAdminUser=({setOpenPopup})=>{
     e.preventDefault()
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return    setDoc(doc(db, "cities", userCredential.user.uid), {
+      return    setDoc(doc(db, "adminUsers", userCredential.user.uid), {
+        id:userCredential.user.uid,
         email: userCredential.user.email,
-        state: "CA",
-        country: "USA",
+        status : "active",
         time:serverTimestamp()
       });
     //  return addDoc(collection(db, "adminUsers"), {email:userCredential.user.email,id:userCredential.user.uid,time:serverTimestamp()});

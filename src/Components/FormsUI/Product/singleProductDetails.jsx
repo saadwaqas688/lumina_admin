@@ -3,7 +3,7 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-const Post = ({data}) => {
+const SingleProductDetails = ({data}) => {
   return (
     <Paper elevation={6} >
   <Grid container   spacing={2} sx={{padding:'10px'}}>
@@ -63,4 +63,4 @@ const Post = ({data}) => {
   );
 };
 
-export default Post;
+export default SingleProductDetails;

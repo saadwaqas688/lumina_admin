@@ -109,7 +109,6 @@ export default function useTable(records, headCells, filterFn,setPage,setRowsPer
     }
 
     const recordsAfterPagingAndSorting = () => {
-        console.log("re+++++++",filterFn.fn(records))
        const result =  stableSort(filterFn.fn(records), getComparator(order, orderBy))
             .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
             return result

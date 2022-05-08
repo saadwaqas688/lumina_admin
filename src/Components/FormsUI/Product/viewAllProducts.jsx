@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import FormikForm from '../Product/addProduct';
+import FormikForm from './addProduct';
 import Popup from '../Popup/Popup';
-import { collection ,getDocs,deleteDoc,doc} from "firebase/firestore"; 
-import {db} from "../../../config/Firebase/firebase"
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../../PageWrapper';
 import Table from '../Table/Table';
-
-
+import { deleteService, getService } from '../../../services/services';
 const headCells = [
     { id: 'fullName', label: 'Name' },
     { id: 'price', label: 'Price' },
@@ -16,55 +13,43 @@ const headCells = [
     { id: 'Actions', label: 'Actions', disableSorting: true },
 
 ]
-export default function ProductDetails() {
+export default function ViewAllProducts() {
 
     const [records, setRecords] = useState()
     const [loading, setLoading] = useState(false)
     const [openPopup, setOpenPopup] = useState(false)
     const [recordForEdit, setRecordForEdit] = useState(null)
-    const handelFetch = async() => {
+    const getAllProducts = async() => {
+        let list=[]
         setLoading(true)
-        let list=[];      
-      const querySnapshot = await getDocs(collection(db, "shop"));
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        list.push({id:doc.id,
-            firstValue:doc.data().name,
-            secondValue:doc.data().price,
-            thirdValue:doc.data().quantity,
-          
-          ...doc.data()})
-      
-      
-        // console.log(doc.id, " => ", doc.data());
-      });
-      
-      setRecords(list)
-      setLoading(false)
+        const querySnapshot =await getService("shop")
 
-      
-      };
+        querySnapshot.forEach((doc) => {
+          list.push({id:doc.id,
+              firstValue:doc.data().name,
+              secondValue:doc.data().price,
+              thirdValue:doc.data().quantity,
+              ...doc.data()})
+                });
+        setRecords(list)
+        setLoading(false)
+            };
 
 
       function handleModal(){
         setRecordForEdit('')
         setOpenPopup(!openPopup)
-    
-    
     }
     useEffect(()=>{
         // if(!openPopup){
-        handelFetch()
+       getAllProducts()
         // }
        },[ ])
       
-      const handelDelete = async (id) => {
-        await deleteDoc(doc(db, "shop", id));
-      
+      const deleteProduct = async (id) => {
+        await deleteService("shop",id)
         const result =records.filter((item)=>item.id!==id)
-      
         setRecords(result)
-            
       };
     return (
         <PageWrapper>
@@ -84,9 +69,8 @@ export default function ProductDetails() {
     <Table records={records} 
     
     setOpenPopup={setOpenPopup} 
-    //   openPopup={openPopup}
       setRecordForEdit={setRecordForEdit}
-      handelDelete={handelDelete}
+      handelDelete={deleteProduct}
       headCells={headCells}
       viewDetailsButton={true}
       editButton={true}
@@ -107,6 +91,7 @@ export default function ProductDetails() {
                          records={records}
                          setRecords={setRecords}
                          handleModal={handleModal}
+                         getAllProducts={getAllProducts}
                          recordForEdit={recordForEdit}
         />
 

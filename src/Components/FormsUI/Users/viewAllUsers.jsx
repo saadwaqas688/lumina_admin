@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import FormikForm from '../Product/addProduct';
 import Popup from '../Popup/Popup';
-import { collection ,getDocs,doc, updateDoc} from "firebase/firestore"; 
-import {db} from "../../../config/Firebase/firebase"
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../../PageWrapper';
 import Table from '../Table/Table';
+import { getService, updateService } from '../../../services/services';
 
 
 const headCells = [
@@ -25,19 +24,16 @@ export default function ViewAllUsers() {
     const handelFetch = async() => {
         setLoading(true)
         let list=[];      
-      const querySnapshot = await getDocs(collection(db, "Users"));
+      const querySnapshot =await getService("Users")
+
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         list.push({id:doc.id,
             firstValue:doc.data().name,
             secondValue:doc.data().email,
             thirdValue:doc.data().phone,
           
           ...doc.data()})
-      
-      
-        // console.log(doc.id, " => ", doc.data());
-      });
+            });
       
       setRecords(list)
       setLoading(false)
@@ -58,22 +54,20 @@ export default function ViewAllUsers() {
         // }
        },[ ])
 
-      const updateStatus = async (id,status) => {
-        const newStatus= status==="blocked"?"active":"blocked";
-      const washingtonRef = doc(db, "Users", id);
-      await updateDoc(washingtonRef, {
-          status: newStatus
-        })
-        const updatedData = records.map((item) => {
-            
-          if(item.id === id){
-              item.status=newStatus
-          } 
-          return item
+  
+    const updateStatus = async (id,status) => {
+      const newStatus= status==="blocked"?"active":"blocked";
+      await updateService('Users',id,{status:newStatus})
+      const updatedData = records.map((item) => {
           
-          });   
-        setRecords(updatedData) 
-    }
+        if(item.id === id){
+            item.status=newStatus
+        } 
+        return item
+        
+        });   
+      setRecords(updatedData) 
+  }
     return (
         <PageWrapper>
           

@@ -7,10 +7,10 @@ import Textfield from "../Textfield";
 import PreviewImage from "../PreviewImage";
 import Inputfield from "../Inputfield";
 import Select from "../Select";
-import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
-import { db, storage } from "../../../config/Firebase/firebase";
+import {storage } from "../../../config/Firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import ActionButton from "../controls/ActionButton";
+import { postService, updateService } from "../../../services/services";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiFormControl-root": {
@@ -40,7 +40,7 @@ const quantity = {
   9: "9",
   10: "10",
 };
-const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
+const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
@@ -156,7 +156,6 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
             getDownloadURL(uploadTask.snapshot.ref).then(
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
-                let data = records;
                 const record = {
                   colors: values.colors,
                   description: values.description,
@@ -171,18 +170,16 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
                   file: filedata,
                 };
                 if (recordForEdit) {
-                  const washingtonRef = doc(db, "shop", recordForEdit.id);
-                  await updateDoc(washingtonRef, record);
+                  await updateService("shop",recordForEdit.id,record)
                   setloader(false);
-
                   handleModal();
+                  getAllProducts()
                 } else {
-                  await addDoc(collection(db, "shop"), record);
-                  data.push(record);
-                  setRecords(data);
+                  await postService("shop",record)
                   setloader(false);
-
                   handleModal();
+                  getAllProducts()
+
                 }
               }
             );
@@ -202,10 +199,10 @@ const FormikForm = ({ recordForEdit, records, setRecords, handleModal }) => {
           discountPrice: values.discountPrice,
           file: values.file,
         };
-        const washingtonRef = doc(db, "shop", recordForEdit.id);
-        await updateDoc(washingtonRef, record);
+        await updateService("shop",recordForEdit.id,record)
         setloader(false);
         handleModal();
+        getAllProducts()
       }
     } catch (error) {
       console.log("catchError", error);

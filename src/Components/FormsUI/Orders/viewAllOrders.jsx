@@ -13,7 +13,7 @@ const headCells = [
     { id: 'Actions', label: 'Actions', disableSorting: true },
 
 ]
-export default function ViewAllUsers() {
+export default function ViewAllOrders() {
 
     const [records, setRecords] = useState()
     const [loading, setLoading] = useState(false)
@@ -22,7 +22,7 @@ export default function ViewAllUsers() {
     const handelFetch = async() => {
         setLoading(true)
         let list=[];      
-      const querySnapshot =await getService("Users")
+      const querySnapshot =await getService("orders")
 
       querySnapshot.forEach((doc) => {
         list.push({id:doc.id,
@@ -38,8 +38,7 @@ export default function ViewAllUsers() {
 
       
       };
-
-
+      
       function handleModal(){
         setRecordForEdit('')
         setOpenPopup(!openPopup)
@@ -92,7 +91,8 @@ export default function ViewAllUsers() {
       deleteButton={false}
       updateStatus={updateStatus}
       path='users'
-/> :
+/>
+  :
           <></>
 
 }

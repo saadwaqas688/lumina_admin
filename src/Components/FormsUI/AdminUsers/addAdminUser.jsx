@@ -28,7 +28,6 @@ const AddAdminUser=({setOpenPopup})=>{
         status : "active",
         time:serverTimestamp()
       });
-    //  return addDoc(collection(db, "adminUsers"), {email:userCredential.user.email,id:userCredential.user.uid,time:serverTimestamp()});
     }).then((data)=>{
       setOpenPopup(false)
       console.log('data',data)

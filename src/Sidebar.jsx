@@ -27,7 +27,7 @@ const Sidebar = ({mode,setMode}) => {
     //   <Paper  elevation={6} sx={{mt:'30px',position:'fixed'}}>
         <List >
           <ListItem >
-            <ListItemButton component="a" href="#home">
+            <ListItemButton component="a" href="/meal">
               <ListItemIcon >
                 <Home sx={{color:'#ff6699' , fontSize:'40px'}}/>
               </ListItemIcon>
@@ -67,7 +67,7 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
           <ListItem >
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="a" href="/orders">
               <ListItemIcon>
                 <Person sx={{color:'#ff6699' , fontSize:'40px'}}/>
               </ListItemIcon>

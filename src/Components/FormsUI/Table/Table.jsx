@@ -140,12 +140,14 @@ export default function Table({records,
 
                                         }
                                 </TableCell>
+                                    { item.secondValue &&
                                      
-                                    <TableCell>
+                                    <TableCell align="center">
                                     <Typography variant="body2" color="text.secondary" >
                                     {item.secondValue}
                                         </Typography>
                                         </TableCell>
+                                        }
                                         { item.thirdValue &&
                                     <TableCell>
                                         
@@ -155,7 +157,7 @@ export default function Table({records,
                                        </TableCell>
                                         }
                                     { viewDetailsButton &&
-                                    <TableCell>
+                                    <TableCell align="center">
                                     <RouterLink to={`/${path}/${item.id}`}  style={{ textDecoration: 'none' }} >
                                     <ActionButton variant="contained" color="primary">
                                        View Details
@@ -165,7 +167,7 @@ export default function Table({records,
                                     </TableCell>
                                         }
                                         { item.status &&
-                                    <TableCell>
+                                    <TableCell align="center">
                                     <ActionButton
                                      variant="contained" 
                                     color={item.status==="blocked"?"":"primary"}
@@ -176,7 +178,7 @@ export default function Table({records,
                                     </TableCell>
                                         }   
                                  {  (editButton  || deleteButton)   &&
-                                    <TableCell>
+                                    <TableCell align="center">
                                         {  editButton &&
                                     <EditIcon  
                                       variant="contained"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Table, TableHead, TableRow, TableCell, makeStyles, TablePagination, TableSortLabel } from '@material-ui/core'
+import { Table, TableHead, TableRow, TableCell, makeStyles, TablePagination, TableSortLabel, Box } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -44,10 +44,11 @@ export default function useTable(records, headCells, filterFn,setPage,setRowsPer
         }
 
         return (<TableHead>
-            <TableRow>
+            <TableRow >
                 {
                     headCells.map(headCell => (
-                        <TableCell key={headCell.id}
+
+                        <TableCell key={headCell.id} align="center"
                             sortDirection={orderBy === headCell.id ? order : false}>
                             {headCell.disableSorting ? headCell.label :
                                 <TableSortLabel
@@ -57,7 +58,8 @@ export default function useTable(records, headCells, filterFn,setPage,setRowsPer
                                     {headCell.label}
                                 </TableSortLabel>
                             }
-                        </TableCell>))
+                        </TableCell>
+                        ))
                 }
             </TableRow>
         </TableHead>)

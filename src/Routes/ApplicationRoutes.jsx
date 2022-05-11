@@ -4,17 +4,17 @@ import {
     Routes,
     Route,
   } from "react-router-dom";
-import Login from "../Components/FormsUI/Login/login";
-import ViewAllUsers from "../Components/FormsUI/Users/viewAllUsers";
-import SingleUser from "../Components/FormsUI/Users/singleUser";
-import SingleProduct from "../Components/FormsUI/Product/singleProduct";
-import ViewAllProducts from "../Components/FormsUI/Product/viewAllProducts";
-import ViewAllAdminUsers from "../Components/FormsUI/AdminUsers/viewAllAdminUsers";
-import ViewAllOrders from "../Components/FormsUI/Orders/viewAllOrders";
-import ViewAllMeals from "../Components/FormsUI/Meal/viewAllMeals";
-import SingleMeal from "../Components/FormsUI/Meal/singleMeal";
-import ViewAllClasses from "../Components/FormsUI/Classes/viewAllClasses";
-import SingleClass from "../Components/FormsUI/Classes/singleClass";
+import ViewAllAdminUsers from "../Components/Views/AdminUsers/viewAllAdminUsers";
+import SingleClass from "../Components/Views/Classes/singleClass";
+import ViewAllClasses from "../Components/Views/Classes/viewAllClasses";
+import Login from "../Components/Views/Login/login";
+import SingleMeal from "../Components/Views/Meal/singleMeal";
+import ViewAllMeals from "../Components/Views/Meal/viewAllMeals";
+import ViewAllOrders from "../Components/Views/Orders/viewAllOrders";
+import SingleProduct from "../Components/Views/Product/singleProduct";
+import ViewAllProducts from "../Components/Views/Product/viewAllProducts";
+import SingleUser from "../Components/Views/Users/singleUser";
+import ViewAllUsers from "../Components/Views/Users/viewAllUsers";
 const ApplicationRoutes = () => {
 //   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 

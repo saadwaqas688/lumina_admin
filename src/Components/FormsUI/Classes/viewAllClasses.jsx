@@ -100,7 +100,7 @@ export default function ViewAllClasses() {
       deleteButton={true}
       updateStatus={updateStatus}
       addNew={true}
-      path="meal"
+      path="Classes"
 
 />
    

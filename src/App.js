@@ -1,4 +1,3 @@
-import './App.css';
 import ApplicationRoutes from './Routes/ApplicationRoutes';
 
 

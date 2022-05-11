@@ -1,8 +1,8 @@
 import { Box, Grid, Paper } from "@material-ui/core";
 import {
-  Rating,
   Typography,
 } from "@mui/material";
+import CircleBulletIcon from "../controls/CircleIcon";
 const SingleMealDetails = ({data}) => {
   return (
     <Paper elevation={6} >
@@ -13,57 +13,77 @@ const SingleMealDetails = ({data}) => {
         </Typography>
       
     <img src={data.image} alt="Paella dish" width="80%" 
-    height="400px" style={{marginTop:"20px",marginLeft:"20px",borderRadius:"10px",objectFit:"fill"}}
+    height="400px" style={{marginBottom:'20px',marginTop:"20px",marginLeft:"20px",borderRadius:"10px",objectFit:"fill"}}
   />
             </Grid>
         <Grid item xs={12} md={6}>
-    <Typography variant="h5" color="text.secondary" sx={{mt:'20px' ,ml:'20px',mr:'20px'}}>
-         Recipe :
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
-         {data.recipe}
-        </Typography>
-        {/* <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
-          Rating :
-        </Typography> */}
-
-        {/* <Rating name="read-only" value={data.rating} readOnly sx={{ml:'20px'}}/> */}
-        <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
-          Ingredients :
+        <Box  sx={{display:'flex' ,justifyContent:'space-between',marginRight:'20px',marginTop:'20px'}}>
+           <Box sx={{display:'flex',flexDirection:'column' ,justifyContent:'center',alignItems:'center',marginRight:'20px'}}>
+         <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px',fontWeight:'bold'}}>
+           Protien
           </Typography>
-          <Box sx={{display:'flex',mt:'5px',ml:'20px',mr:'20px'}}>
-       {   data.ingredients.map((item,index,ingredients)=>{
+          <Typography variant="h6" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
+          {data.protiens}
+          </Typography>
+          </Box>
+          <Box sx={{display:'flex',flexDirection:'column' ,justifyContent:'center',alignItems:'center',marginRight:'20px'}}>
+         <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px',fontWeight:'bold'}}>
+         Fats
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
+          {data.fats}
+          </Typography>
+          </Box>
+          <Box sx={{display:'flex',flexDirection:'column' ,justifyContent:'center',alignItems:'center',marginRight:'20px'}}>
+         <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px',fontWeight:'bold'}}>
+         Carbs
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
+          {data.carbs}
+          </Typography>
+          </Box>
+          </Box>
+          <Typography variant="h5" color="text.secondary" sx={{mb:'20px',mt:'20px',textAlign:'center',fontWeight:'bold'}}>
+          Ingredients 
+          </Typography>
+                         
+       {   data.ingredients.map((item)=>{
          return( 
-           <Typography variant="body1" color="text.secondary" >
-             {index===ingredients.length-1?item.ingredient+'   '+item.quantity
-             :item.ingredient+"    "+item.quantity+","}
-           </Typography>
+          <Grid container >
+         { <Grid item xs={12}>
+            <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',ml:'20px',mr:'20px'}}>
+            <Typography variant="h6" color="text.secondary">
+            <CircleBulletIcon sx={{fontSize:"10px" ,mr:'5px'}}/>{item.ingredient}
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{mr:'20%'}}>
+          {item.quantity}
+          </Typography>
+            </Box>
+            
+          </Grid>
+          }
+          </Grid>
          )
        })
        }
-         </Box>
-         <Box  sx={{display:'flex' ,justifyContent:'space-between',marginRight:'20px'}}>
-         <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
-           Protien
-          </Typography>
-          <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
-           Fats
-          </Typography>
-          <Typography variant="h5" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
-          Carbs
-          </Typography>
+    <Typography variant="h5" color="text.secondary" sx={{mt:'20px',textAlign:'center',fontWeight:'bold'}}>
+         Recipe 
+        </Typography>
+        <Typography variant="body1" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
+         {data.recipe.map((item,index)=>{
+          return (
+          <Box >
+            <CircleBulletIcon sx={{fontSize:"10px" ,mr:'5px'}}/>
+            {item}
           </Box>
-
+          )
+         })}
+        </Typography>
         </Grid>
  
 
     </Grid>
     </Paper>
-
-//   <Paper elevation={3} >
-
-
-// </Paper >
 
   
   );

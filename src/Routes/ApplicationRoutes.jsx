@@ -13,6 +13,7 @@ import ViewAllAdminUsers from "../Components/FormsUI/AdminUsers/viewAllAdminUser
 import ViewAllOrders from "../Components/FormsUI/Orders/viewAllOrders";
 import ViewAllMeals from "../Components/FormsUI/Meal/viewAllMeals";
 import SingleMeal from "../Components/FormsUI/Meal/singleMeal";
+import ViewAllClasses from "../Components/FormsUI/Classes/viewAllClasses";
 const ApplicationRoutes = () => {
 //   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
@@ -28,6 +29,8 @@ const ApplicationRoutes = () => {
       <Route path="/orders" element={<ViewAllOrders/>} />
       <Route path="/meal" element={<ViewAllMeals/>} />
       <Route path="/meal/:id" element={<SingleMeal/>} />
+      <Route path="/Classes" element={<ViewAllClasses/>} />
+
 
 
       <Route path="/" element={<Login/>} />

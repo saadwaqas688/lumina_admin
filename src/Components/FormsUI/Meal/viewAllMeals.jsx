@@ -4,7 +4,7 @@ import Popup from '../Popup/Popup';
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../../PageWrapper';
 import Table from '../Table/Table';
-import { deleteService, getService, updateService } from '../../../services/services';
+import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
 const headCells = [
     { id: 'title', label: 'Title' },
     { id: 'Details', label: 'Details', disableSorting: true },
@@ -43,7 +43,13 @@ export default function ViewAllMeals() {
         // }
        },[ ])
       
-      const deleteProduct = async (id) => {
+      const deleteProduct = async (id,url) => {
+        console.log('ViewAllProducts',url)
+        
+        await deleteService("shop",id)
+        if(url){
+          deleteAsset(url)
+        }
         await deleteService("meal",id)
         const result =records.filter((item)=>item.id!==id)
         setRecords(result)

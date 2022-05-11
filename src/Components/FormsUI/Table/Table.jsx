@@ -118,9 +118,13 @@ export default function Table({records,
                 <TblContainer>
                     <TblHead />
                     <TableBody>
-                        {
-                            recordsAfterPagingAndSorting().map(item =>
-                                (<TableRow key={item.id}>
+                        {    
+
+                            recordsAfterPagingAndSorting().map(item =>{
+
+                                const assetUrl=item.videoUrl?item.videoUrl:item.image?item.image:null
+                                
+                                return (<TableRow key={item.id}>
                                     <TableCell>
                                     { item.image?
                                         <Box sx={{ display:'flex',flexDirection: 'column',justifyContent:'center',alignItems:'center'}}>
@@ -133,7 +137,17 @@ export default function Table({records,
                                 <Typography variant="body1" color="text.secondary"  >
                                               {item.firstValue}
                                </Typography>
-                                     </Box>:
+                                     </Box>:item.videoUrl?
+                                           <Box sx={{ display:'flex',flexDirection: 'column',justifyContent:'center',alignItems:'center'}}>
+                                           <video
+                                           src={item.videoUrl}
+                                               controls
+                                           style={{ width: "200px", height: "200px" }}
+                               />
+                                 <Typography variant="body1" color="text.secondary"  >
+                                               {item.firstValue}
+                                </Typography>
+                                </Box>:
                                <Typography variant="body1" color="text.secondary"  >
                                      {item.firstValue}
                               </Typography>
@@ -185,17 +199,18 @@ export default function Table({records,
                                       color="primary"
                                       onClick={() => { openInPopup(item) }} />
                                         }
-                                 {    deleteButton  &&
+                                 {    deleteButton  && 
                                         <DeleteIcon
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => { handelDelete(item.id) }}  
+                                        onClick={() => { handelDelete(item.id,assetUrl) }}  
                                          />
                                  }
                                     </TableCell>
                                   }
 
                                 </TableRow>)
+                            }
                             )
                                 }
                     </TableBody>

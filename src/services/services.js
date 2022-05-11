@@ -1,5 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
-import {db} from "../config/Firebase/firebase"
+import { deleteObject, ref } from "firebase/storage";
+import {db, storage} from "../config/Firebase/firebase"
 
 
   export const getService = async (path) => {
@@ -32,3 +33,16 @@ import {db} from "../config/Firebase/firebase"
 
    
        };  
+
+      export const deleteAsset = (assetUrl) => {
+        
+          const deleteRef = ref(storage, assetUrl);
+          deleteObject(deleteRef)
+            .then(() => {
+           console.log('your asset is removed')
+            })
+            .catch((error) => {
+              alert(error.message)
+              console.log(error.message);
+            });
+        };

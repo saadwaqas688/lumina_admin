@@ -342,9 +342,9 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                       {
                         <Grid item xs={12}>
                           {recordForEdit && editMode ? (
-                            <PreviewImage url={recordForEdit.image} />
+                            <PreviewImage url={recordForEdit.image} image={true} />
                           ) : values.file && values.file[2] ? (
-                            <PreviewImage file={values.file[2]} />
+                            <PreviewImage file={values.file[2]} image={true}/>
                           ) : (
                             <></>
                           )}

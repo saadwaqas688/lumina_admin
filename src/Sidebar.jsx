@@ -43,7 +43,7 @@ const Sidebar = ({mode,setMode}) => {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="a" href="/Classes">
               <ListItemIcon >
                 <Article sx={{color:'#ff6699' , fontSize:'40px'}}/>
               </ListItemIcon>

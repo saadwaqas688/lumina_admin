@@ -1,34 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import FormikForm from './addProduct';
 import Popup from '../Popup/Popup';
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../../PageWrapper';
 import Table from '../Table/Table';
-import { deleteAsset, deleteService, getService } from '../../../services/services';
+import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
+import AddClass from './addClass';
 const headCells = [
-    { id: 'fullName', label: 'Name' },
-    { id: 'price', label: 'Price' },
-    { id: 'quantity', label: 'In Stock' },
+    { id: 'title', label: 'Title' },
+    { id: 'duration', label: 'Duration' },
     { id: 'Details', label: 'Details', disableSorting: true },
     { id: 'Actions', label: 'Actions', disableSorting: true },
 
 ]
-export default function ViewAllProducts() {
+export default function ViewAllClasses() {
 
     const [records, setRecords] = useState()
     const [loading, setLoading] = useState(false)
     const [openPopup, setOpenPopup] = useState(false)
     const [recordForEdit, setRecordForEdit] = useState(null)
-    const getAllProducts = async() => {
+
+    const durationConverter=(duration)=>{
+      if(duration<60){
+        return duration.toFixed(2)+" sec"
+      }else{
+        return (duration/60).toFixed(2)+" min"
+      }
+    }
+    const getAllClasses = async() => {
         let list=[]
         setLoading(true)
-        const querySnapshot =await getService("shop")
+        const querySnapshot =await getService("classes")
 
         querySnapshot.forEach((doc) => {
+        
           list.push({id:doc.id,
-              firstValue:doc.data().name,
-              secondValue:doc.data().price,
-              thirdValue:doc.data().quantity,
+              firstValue:doc.data().title,
+              secondValue:durationConverter(doc.data().duration),
               ...doc.data()})
                 });
         setRecords(list)
@@ -41,26 +48,37 @@ export default function ViewAllProducts() {
         setOpenPopup(!openPopup)
     }
     useEffect(()=>{
-        // if(!openPopup){
-       getAllProducts()
-        // }
+       getAllClasses()
        },[ ])
       
       const deleteProduct = async (id,url) => {
-        console.log('ViewAllProducts',url)
-        
-        await deleteService("shop",id)
+        await deleteService("classes",id)
         if(url){
           deleteAsset(url)
         }
         const result =records.filter((item)=>item.id!==id)
         setRecords(result)
       };
+
+      const updateStatus = async (id,status) => {
+        const newStatus= status==="featured"?"notFeatured":"featured";
+        await updateService('classes',id,{status:newStatus})
+
+        const updatedData = records.map((item) => {
+            
+          if(item.id === id){
+              item.status=newStatus
+          } 
+          return item
+          
+          });   
+        setRecords(updatedData) 
+    }
     return (
         <PageWrapper>
           
 
-{   loading ? (
+{   loading  ? (
     <>
           <Skeleton variant="text" height={100} />
           <Skeleton variant="text" height={20} />
@@ -73,15 +91,16 @@ export default function ViewAllProducts() {
     <>
     <Table records={records} 
     
-    setOpenPopup={setOpenPopup} 
+      setOpenPopup={setOpenPopup} 
       setRecordForEdit={setRecordForEdit}
       handelDelete={deleteProduct}
       headCells={headCells}
       viewDetailsButton={true}
       editButton={true}
       deleteButton={true}
+      updateStatus={updateStatus}
       addNew={true}
-      path="shop"
+      path="meal"
 
 />
    
@@ -92,11 +111,11 @@ export default function ViewAllProducts() {
               handleModal={handleModal}
 
           >
-        <FormikForm
+        <AddClass
                          records={records}
                          setRecords={setRecords}
                          handleModal={handleModal}
-                         getAllProducts={getAllProducts}
+                         getAllClasses={getAllClasses}
                          recordForEdit={recordForEdit}
         />
 

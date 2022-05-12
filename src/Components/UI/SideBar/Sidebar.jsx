@@ -50,6 +50,14 @@ const Sidebar = ({mode,setMode}) => {
               <ListItemText sx={{color:"purple"}} primary="Classes" />
             </ListItemButton>
           </ListItem>
+          <ListItem>
+            <ListItemButton component="a" href="/workOuts">
+              <ListItemIcon >
+                <Article sx={{color:'#ff6699' , fontSize:'40px'}}/>
+              </ListItemIcon>
+              <ListItemText sx={{color:"purple"}} primary="Work Outs" />
+            </ListItemButton>
+          </ListItem>
           <ListItem >
             <ListItemButton component="a" href="/users">
               <ListItemIcon>

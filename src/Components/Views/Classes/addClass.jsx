@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Paper} from "@material-ui/core";
+import { Container, Grid, Paper } from "@material-ui/core";
 import Textfield from "../../UI/Textfield";
 import Inputfield from "../../UI/Inputfield";
 import PreviewImage from "../../UI/PreviewImage";
 import {storage } from "../../../config/Firebase/firebase";
-import ActionButton from "../../UI/controls/ActionButton";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { deleteAsset, postService, updateService } from "../../../services/services";
+import { postService, updateService } from "../../../services/services";
+import Select from "../../UI/controls/Select";
+import ActionButton from "../../UI/controls/ActionButton";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiFormControl-root": {
@@ -27,16 +28,29 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "50px",
   },
 }));
-const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
+const quantity = [
+  {id:"1",title:'1'},
+  {id:"1",title:'1'},
+  {id:"1",title:'1'},
+  {id:"1",title:'1'},
+  {id:"1",title:'1'},
+  {id:"1",title:'1'},
+
+
+];
+const AddClass = ({ recordForEdit, records,  handleModal,getAllProducts }) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
   const INITIAL_FORM_STATE = {
-    title: "",
-    duration: "",
-    description:"",
+    name: "",
+    price: "",
+    discountPrice: "",
+    quantity: "",
+    description: "",
+    colors: [" "],
     file: null,
-    videoUrl: "",
+    imageUrl: "",
     loader: false,
     error: null,
   };
@@ -45,68 +59,44 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
 
   if (editMode) {
     FORM_VALIDATION = Yup.object().shape({
-      title: Yup.string()
+      name: Yup.string()
         .typeError("Please enter a valid phone number")
         .required("Required"),
-        protiens: Yup.number().integer().required("Required"),
-        fats: Yup.number().integer().required("Required"), 
-        carbs: Yup.number().integer().required("Required"),
-        ingredients:Yup.array(
-          Yup.object({
-            ingredient: Yup.string()
-              .required('Ingredient name needed'),
-              // .min(3, 'Ingredient name needs to be at least 3 characters')
-              // .max(
-              //   10,
-              //   'Ingredient name needs to be at most 10 characters'
-              // ),
-            quantity: Yup.number()
-              .required('Quantity needed')
-              // .min(1, 'Quantity needs to be at least 1%')
-              // .max(100, 'Quantity can be at most 100%'),
-          })
+      price: Yup.number().integer().required("Required"),
+      discountPrice: Yup.number().integer().required("Required"), 
+      quantity: Yup.number()
+        .integer()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+
+      description: Yup.string().required("Required"),
+      colors: Yup.array()
+        .of(
+          Yup.string("String is Required!")
+            .min(4, "Too Short")
+            .max(20, "Too Long")
+            .required("Required")
         )
-          .min(1, 'You need to provide at least 1 ingredient')
-          .max(3, 'You can only provide 3 ingredient'),
-          recipe: Yup.array()
-          .of(
-            Yup.string("String is Required!")
-              .min(4, "Too Short")
-              .max(20, "Too Long")
-              .required("Required")
-          )
-          .min(1, "Atleast One Social Media is Required!")
-          .required("Required"),
+        .min(1, "Atleast One Social Media is Required!")
+        .required("Required"),
 
       // file: Yup.array()
       //   .required("Required Field")
     });
   } else {
     FORM_VALIDATION = Yup.object().shape({
-      title: Yup.string()
-      .typeError("Please enter a valid phone number")
-      .required("Required"),
-      protiens: Yup.number().integer().required("Required"),
-      fats: Yup.number().integer().required("Required"), 
-      carbs: Yup.number().integer().required("Required"),
-      ingredients:Yup.array(
-        Yup.object({
-          ingredient: Yup.string()
-            .required('Ingredient name needed')
-            .min(3, 'Ingredient name needs to be at least 3 characters')
-            .max(
-              10,
-              'Ingredient name needs to be at most 10 characters'
-            ),
-          quantity: Yup.number()
-            .required('Quantity needed')
-            // .min(1, 'Quantity needs to be at least 1%')
-            // .max(100, 'Quantity can be at most 100%'),
-        })
-      )
-        .min(1, 'You need to provide at least 1 ingredient')
-        .max(3, 'You can only provide 3 ingredient'),
-        recipe: Yup.array()
+      name: Yup.string()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+      price: Yup.number().integer().required("Required"),
+      discountPrice: Yup.number().integer().required("Required"), 
+      quantity: Yup.number()
+        .integer()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+
+      description: Yup.string().required("Required"),
+      colors: Yup.array()
         .of(
           Yup.string("String is Required!")
             .min(4, "Too Short")
@@ -137,7 +127,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
       if (values.file[2]) {
         const value = values.file[2];
         const name2 = new Date().getTime() + "" + value.name;
-        const storageRef = ref(storage, "videos/" + name2);
+        const storageRef = ref(storage, "photos/" + name2);
         const uploadTask = uploadBytesResumable(storageRef, value);
         uploadTask.on(
           "state_changed",
@@ -165,23 +155,28 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
                 const record = {
-                  title: values.title,
-                  duration: values.file[3],
-                  description:values.description,
-                  videoUrl: downloadURL,
+                  colors: values.colors,
+                  description: values.description,
+                  image: downloadURL,
+                  likedBy: [],
+                  name: values.name,
+                  numberOfViews: [],
+                  price: values.price,
+                  quantity: values.quantity,
+                  rating: 3,
+                  discountPrice: values.discountPrice,
                   file: filedata,
                 };
                 if (recordForEdit) {
-                  deleteAsset(values.videoUrl)
-                  await updateService("classes",recordForEdit.id,record)
+                  await updateService("shop",recordForEdit.id,record)
                   setloader(false);
                   handleModal();
-                  getAllClasses()
+                  getAllProducts()
                 } else {
-                  await postService("classes",record)
+                  await postService("shop",record)
                   setloader(false);
                   handleModal();
-                  getAllClasses()
+                  getAllProducts()
 
                 }
               }
@@ -189,17 +184,23 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
           }
         );
       } else {
-      
         const record = {
-          title: values.title,
-          duration: values.duration,
-          description:values.description,
+          colors: values.colors,
+          description: values.description,
+          image: values.image,
+          likedBy: [],
+          name: values.name,
+          numberOfViews: [],
+          price: values.price,
+          quantity: values.quantity,
+          rating: 3,
+          discountPrice: values.discountPrice,
           file: values.file,
         };
-        await updateService("classes",recordForEdit.id,record)
+        await updateService("shop",recordForEdit.id,record)
         setloader(false);
         handleModal();
-        getAllClasses()
+        getAllProducts()
       }
     } catch (error) {
       console.log("catchError", error);
@@ -222,17 +223,25 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
                 initialValues={{
                   ...initialValues,
                 }}
-                // validationSchema={FORM_VALIDATION}
+                validationSchema={FORM_VALIDATION}
                 onSubmit={(values) => handelclick(values)}
                 render={({ values, errors, touched,submitForm}) => (
-                  <>
-                  {console.log(values)}
                   <Form>
                     <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <Textfield name="title" label="Title" size="small" />
+                      <Grid item xs={6}>
+                        <Textfield name="name" label="Name" size="small" />
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid item xs={3}>
+                        <Textfield name="price" label="Price" size="small" />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Textfield
+                          name="discountPrice"
+                          label="Discount Price"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
                         <Textfield
                           name="description"
                           label="Description"
@@ -241,23 +250,105 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
                           minRows={4}
                         />
                       </Grid>
-                      
+
+                      <Grid item xs={6}>
+                        <Select
+                          name="quantity"
+                          label="Quantity"
+                          size="small"
+                          options={quantity}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <FieldArray
+                          name="colors"
+                          render={(arrayHelpers) => (
+                            <div>
+                              {values.colors && values.colors.length > 0 && (
+                                <>
+                                  <Grid
+                                    container
+                                    spacing={2}
+                                    style={{ marginBottom: "10px" }}
+                                  >
+                                    {values.colors.map((friend, index) => (
+                                      <Grid item xs={4}>
+                                        <div key={index}>
+                                          <Textfield
+                                            name={`colors.${index}`}
+                                            label="color"
+                                            size="small"
+                                          />
+                                        </div>
+                                      </Grid>
+                                    ))}
+                                  </Grid>
+                                </>
+                              )}
+                              <>
+                                {values.colors.length > 1 && (
+                                  // <FormButton
+                                  //   style={{ marginRight: "10px" }}
+                                  //   color="secondary"
+                                  //   onClick={() =>
+                                  //     arrayHelpers.remove(
+                                  //       values.colors.length - 1
+                                  //     )
+                                  //   }
+                                  // >
+                                  //   Remove color
+                                  // </FormButton>
+                                  <ActionButton  style={{ marginRight: "10px" }}
+                                  variant="contained"  color="primary" size='small'
+                                     onClick={() =>
+                                      arrayHelpers.remove(
+                                        values.colors.length - 1
+                                      )
+                                    } 
+                                   >
+                                       Remove Color
+                                    </ActionButton>
+                                )}
+                                {/* <FormButton
+                                  onClick={() =>
+                                    arrayHelpers.insert(
+                                      values.colors.length,
+                                      ""
+                                    )
+                                  }
+                                >
+                                  Add Color
+                                </FormButton> */}
+                                  <ActionButton variant="contained"  color="primary"  
+                                    size='small'
+                                     onClick={() =>
+                                    arrayHelpers.insert(
+                                      values.colors.length,
+                                      ""
+                                    )
+                                  } >
+                                       Add Color
+                                    </ActionButton>
+                              </>
+                            </div>
+                          )}
+                        />
+                      </Grid>
+                      {values.error && <div>{values.error}</div>}
+
+                      {
                         <Grid item xs={12}>
-                        {recordForEdit && editMode ? (
-                            <PreviewImage url={recordForEdit.videoUrl} />
+                          {recordForEdit && editMode ? (
+                            <PreviewImage url={recordForEdit.image} image={true} />
                           ) : values.file && values.file[2] ? (
-                            <PreviewImage file={values.file[2]} />
+                            <PreviewImage file={values.file[2]} image={true}/>
                           ) : (
                             <></>
                           )}
-                       
+                          <Inputfield name="file" setEditMode={setEditMode} />
                         </Grid>
-                           <Grid item xs={12}>
-                        
-                     
-                       <Inputfield name="file" video={true} setEditMode={setEditMode} />
-                     </Grid>
-                      
+                      }
 
                       <Grid item xs={12}>
                       <ActionButton variant="contained"  color="primary"  
@@ -268,11 +359,12 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
                        {loader ? "Please Wait..." : "Submit Form"}
 
                                     </ActionButton>
-                      
+                        {/* <Button>
+                          {loader ? "Please Wait..." : "Submit Form"}
+                        </Button> */}
                       </Grid>
                     </Grid>
                   </Form>
-                  </>
                 )}
               ></Formik>
             </div>
@@ -284,4 +376,3 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses }) => {
 };
 
 export default AddClass;
-

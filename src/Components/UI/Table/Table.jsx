@@ -21,15 +21,15 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(3)
     },
     searchInput: {
-        width: '75%',
+        width: '55%',
     },
     searchInput2: {
         width: '100%',
     },
-    newButton: {
+    newButton1: {
         position: 'absolute',
         right: '10px'
-    }
+    },
 }))
 
 
@@ -43,10 +43,14 @@ export default function Table({records,
     deleteButton,
     updateStatus,
     addNew,
-    path
+    path,
+    searchBar,
+    firstButtonText,
+    secondButtonText
 
 }) {
-
+    console.log(  firstButtonText,path,
+        secondButtonText)
     const classes = useStyles();
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResult, setSearchResult] = useState('')
@@ -91,12 +95,14 @@ export default function Table({records,
         setRecordForEdit(item)
         setOpenPopup(true)
     }
+  
     return (
         <>
         <Box flex={4} p={{ xs: 0, md: 2 }}>
 
             <Paper >
                 <Toolbar>
+                    {searchBar &&
                     <Input
                         label="Search Product"
                         className={addNew?classes.searchInput:classes.searchInput2}
@@ -106,14 +112,37 @@ export default function Table({records,
                             </InputAdornment>)
                         }}
                         onChange={handleSearch}
-                    />{ addNew &&
-                       <Button
-                        text="Add New"
-                        variant="outlined"
-                        startIcon={<AddIcon />}
-                        className={classes.newButton}
-                        onClick={() => { setOpenPopup(true) }}
                     />
+                    }
+                    { addNew &&
+                    //    <Button
+                    //     text="Add hello"
+                    //     variant="outlined"
+                    //     startIcon={<AddIcon />}
+                    //     className={classes.newButton}
+                    //     onClick={() => { setOpenPopup(true) }}
+                    // />
+                    <RouterLink to="/classesCategories"  style={{ textDecoration: 'none' }} >
+                                     <ActionButton  variant="contained" color="primary">
+                                       {firstButtonText}
+                                   </ActionButton>
+
+                                     </RouterLink>
+                   
+                      }
+                      { addNew &&
+                    //    <Button
+                    //     text="Add hello2"
+                    //     variant="outlined"
+                    //     startIcon={<AddIcon />}
+                    //     // className={classes.newButton2}
+                    //     onClick={() => { setOpenPopup(true) }}
+                    <ActionButton  
+                    onClick={() => { setOpenPopup(true) }}
+                    variant="contained" color="primary">
+                     {secondButtonText}
+                   </ActionButton>
+                    
                       }
                 </Toolbar>
                 <TblContainer>

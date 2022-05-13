@@ -136,7 +136,7 @@ import React, { useEffect, useState } from 'react'
 import AddClass from './addClass';
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../UI/PageWrapper/PageWrapper';
-import { deleteAsset, deleteService, getService } from '../../../services/services';
+import { deleteAsset, deleteService, getService, postService } from '../../../services/services';
 import Popup from '../../UI/Popup/Popup';
 import Table from '../../UI/Table/Table';
 const headCells = [
@@ -148,26 +148,108 @@ const headCells = [
 
 ]
 export default function ViewAllClasses() {
-
+  
+    const [workOuts, setWorkOuts] = useState()
     const [records, setRecords] = useState()
+    const [categories, setCategories] = useState()
     const [loading, setLoading] = useState(false)
     const [openPopup, setOpenPopup] = useState(false)
     const [recordForEdit, setRecordForEdit] = useState(null)
-    const getAllProducts = async() => {
-        let list=[]
+    const getAllClasses = async() => {
+      // const data={
+
+      //   categoryName:'test1',
+      //   categoryDescription:'testDescription',
+      //   image:'testImage',
+      //   classes: [
+      //     { className:'firstClass',
+      //       shedule:[{start:'9am',end:'10am'},{start:'12am',end:'1am'}],
+      //        workOuts:[
+      //                 {id:'1',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+      //                 {id:'2',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+      //                 {id:'3',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+      //                 ],
+    
+      //      },
+      //      { className:'secondClass',
+      //      shedule:[{start:'9am',end:'10am'},{start:'12am',end:'1am'}],
+      //      workOuts:[
+      //               {id:'3',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+      //               {id:'4',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+      //               {id:'5',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+      //               ],
+    
+      //    }
+      //        ]
+    
+      // }
+
+   
+      const data= { className:'firstClass',
+                    classDescription:"firstClassDescription",
+                   shedule:[{start:'05/15/2022 09:00 pm',end:'05/15/2022 10:00 pm'},{start:'06/15/2022 09:00 pm',end:'06/15/2022 10:00 pm'}],
+                   workOuts:[
+                      {id:'1',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
+                      {id:'2',name:'secondWorkOut',duration:'15min',equipments:['firstEquiment','secondEquiment']},
+                      {id:'3',name:'thirdWorkOut',duration:'20min',equipments:['firstEquiment','secondEquiment']},
+                      ]
+                }
+         
+                
+      
+      // await postService("/classCategories//classes",)
+
+        let list=[]      
+        let newList=[]
         setLoading(true)
-        const querySnapshot =await getService("shop")
+        const querySnapshot =await getService("classCategories")
 
         querySnapshot.forEach((doc) => {
-          list.push({id:doc.id,
-              firstValue:doc.data().name,
-              secondValue:doc.data().price,
-              thirdValue:doc.data().quantity,
+          list.push({id:doc.id,firstValue:doc.data().title,
+
               ...doc.data()})
                 });
-        setRecords(list)
+
+                list[0].classes.forEach((item) => {
+                  newList.push({id:item.id,firstValue:item.title,
+        
+                      ...item})
+                        });
+
+
+                console.log('allClasses',list)
+
+        setRecords(newList)
         setLoading(false)
             };
+            
+            const getAllClassCategories = async() => {
+              let list=[]
+              setLoading(true)
+              const querySnapshot =await getService("classCategories")
+
+      
+              querySnapshot.forEach((doc) => {
+                list.push({id:doc.id,
+                    value:doc.data().name})
+                      });
+              setCategories(list)
+              setLoading(false)
+                  };
+
+                  const getAllWorkOuts = async() => {
+                    let list=[]
+                    setLoading(true)
+                    const querySnapshot =await getService("workOuts")
+            
+                    querySnapshot.forEach((doc) => {
+                      list.push({id:doc.id,value:doc.data().name,
+                          ...doc.data()})
+                            });
+                            console.log('listsaturday++++++',list)
+                            setWorkOuts(list)
+                    setLoading(false)
+                        };
 
 
       function handleModal(){
@@ -176,7 +258,12 @@ export default function ViewAllClasses() {
     }
     useEffect(()=>{
         // if(!openPopup){
-       getAllProducts()
+
+
+
+       getAllClasses()
+       getAllClassCategories()
+       getAllWorkOuts()
         // }
        },[ ])
       
@@ -190,6 +277,8 @@ export default function ViewAllClasses() {
         const result =records.filter((item)=>item.id!==id)
         setRecords(result)
       };
+
+      console.log('records meray records',records)
     return (
         <PageWrapper>
           
@@ -203,7 +292,7 @@ export default function ViewAllClasses() {
     </>
 ):
 
-    records ?
+    records  && categories && workOuts ?
     <>
     <Table records={records} 
     
@@ -214,7 +303,7 @@ export default function ViewAllClasses() {
       viewDetailsButton={true}
       editButton={true}
       deleteButton={true}
-      addNew={true}
+      addNew={false}
       path="Classes"
       searchBar={false}
       firstButtonText="View Categories"
@@ -228,11 +317,13 @@ export default function ViewAllClasses() {
               handleModal={handleModal}
 
           >
-        <AddClass
+        <AddClass 
                          records={records}
+                         workOuts={workOuts}
+                         categories={categories}
                          setRecords={setRecords}
                          handleModal={handleModal}
-                         getAllProducts={getAllProducts}
+                         getAllProducts={getAllClasses}
                          recordForEdit={recordForEdit}
         />
 

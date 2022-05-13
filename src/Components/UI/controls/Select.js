@@ -1,27 +1,52 @@
-import React from 'react'
-import { FormControl, InputLabel, Select as MuiSelect, MenuItem, FormHelperText } from '@material-ui/core';
+import React from 'react';
+import { TextField, MenuItem } from '@material-ui/core';
+import { useField, useFormikContext } from 'formik';
 
-export default function Select(props) {
+const SelectWrapper = ({
+  name,
+  options,
+  ...otherProps
+}) => {
+  const { setFieldValue } = useFormikContext();
+  const [field, meta] = useField(name);
 
-    const { name, label, value,error=null, onChange, options } = props;
+  const handleChange = evt => {
+    const { value } = evt.target;
+    setFieldValue(name, value);
+  };
 
-    return (
-        <FormControl variant="outlined"
-        {...(error && {error:true})}>
-            <InputLabel>{label}</InputLabel>
-            <MuiSelect
-                label={label}
-                name={name}
-                value={value}
-                onChange={onChange}>
-                <MenuItem value="">None</MenuItem>
-                {
-                    options.map(
-                        item => (<MenuItem key={item.id} value={item.id}>{item.title}</MenuItem>)
-                    )
-                }
-            </MuiSelect>
-            {error && <FormHelperText>{error}</FormHelperText>}
-        </FormControl>
-    )
-}
+  const configSelect = {
+    ...field,
+    ...otherProps,
+    select: true,
+    variant: 'outlined',
+    fullWidth: true,
+    onChange: handleChange
+  };
+
+  if (meta && meta.touched && meta.error) {
+    configSelect.error = true;
+    configSelect.helperText = meta.error;
+  }
+
+  return (
+    <TextField {...configSelect}>
+      {/* {Object.keys(options).map((item, pos) => {
+        return (
+          <MenuItem key={pos} value={item}>
+            {options[item]}
+          </MenuItem>
+        )
+      })} */}
+           {options.map((item) => {
+        return (
+          <MenuItem key={item.id} value={item}>
+            {item.value}
+          </MenuItem>
+        )
+      })}
+    </TextField>
+  );
+};
+
+export default SelectWrapper;

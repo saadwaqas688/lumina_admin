@@ -6,6 +6,7 @@ import PageWrapper from '../../UI/PageWrapper/PageWrapper';
 import { deleteAsset, deleteService, getService } from '../../../services/services';
 import Popup from '../../UI/Popup/Popup';
 import Table from '../../UI/Table/Table';
+import AddClassCategory from './addClassCategory';
 const headCells = [
     { id: 'fullName', label: 'Name' },
     { id: 'price', label: 'Price' },
@@ -23,7 +24,7 @@ export default function ViewAllClassCategories() {
     const getAllProducts = async() => {
         let list=[]
         setLoading(true)
-        const querySnapshot =await getService("shop")
+        const querySnapshot =await getService("classCategories")
 
         querySnapshot.forEach((doc) => {
           list.push({id:doc.id,
@@ -50,7 +51,7 @@ export default function ViewAllClassCategories() {
       const deleteProduct = async (id,url) => {
         console.log('ViewAllProducts',url)
         
-        await deleteService("shop",id)
+        await deleteService("classCategories",id)
         if(url){
           deleteAsset(url)
         }
@@ -82,37 +83,21 @@ export default function ViewAllClassCategories() {
       editButton={true}
       deleteButton={true}
       addNew={true}
-      path="shop"
-      searchBar={false}
-      firstButtonText="Add Class"
-      secondButtonText="Add Category"
+      path="classCategories"
+      searchBar={true}
+      firstButtonText={false}
+      secondButtonText={false}
 
 />
    
               <Popup
-              title="Product"
+              title="Add Category"
               openPopup={openPopup}
             //   setOpenPopup={setOpenPopup}
               handleModal={handleModal}
 
           >
-        <AddClass
-                         records={records}
-                         setRecords={setRecords}
-                         handleModal={handleModal}
-                         getAllProducts={getAllProducts}
-                         recordForEdit={recordForEdit}
-        />
-
-          </Popup>
-                      <Popup
-              title="Product"
-              openPopup={openPopup}
-            //   setOpenPopup={setOpenPopup}
-              handleModal={handleModal}
-
-          >
-        <AddClass
+        <AddClassCategory
                          records={records}
                          setRecords={setRecords}
                          handleModal={handleModal}

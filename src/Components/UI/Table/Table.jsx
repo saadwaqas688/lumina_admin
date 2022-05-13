@@ -21,12 +21,12 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(3)
     },
     searchInput: {
-        width: '55%',
+        width: '75%',
     },
     searchInput2: {
         width: '100%',
     },
-    newButton1: {
+    newButton: {
         position: 'absolute',
         right: '10px'
     },
@@ -114,14 +114,17 @@ export default function Table({records,
                         onChange={handleSearch}
                     />
                     }
-                    { addNew &&
-                    //    <Button
-                    //     text="Add hello"
-                    //     variant="outlined"
-                    //     startIcon={<AddIcon />}
-                    //     className={classes.newButton}
-                    //     onClick={() => { setOpenPopup(true) }}
-                    // />
+                    {addNew &&
+                             <Button
+                        text="Add New"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        className={classes.newButton}
+                        onClick={() => { setOpenPopup(true) }}
+                    />
+                    }
+                    { firstButtonText &&
+                  
                     <RouterLink to="/classesCategories"  style={{ textDecoration: 'none' }} >
                                      <ActionButton  variant="contained" color="primary">
                                        {firstButtonText}
@@ -130,7 +133,7 @@ export default function Table({records,
                                      </RouterLink>
                    
                       }
-                      { addNew &&
+                      { secondButtonText &&
                     //    <Button
                     //     text="Add hello2"
                     //     variant="outlined"

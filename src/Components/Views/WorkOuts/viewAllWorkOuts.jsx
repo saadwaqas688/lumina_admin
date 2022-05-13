@@ -3,6 +3,8 @@ import {Paper, Skeleton} from '@mui/material';
 import PageWrapper from '../../UI/PageWrapper/PageWrapper';
 import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
 import Table from '../../UI/Table/Table';
+import Popup from '../../UI/Popup/Popup';
+import AddWorkOut from './addWorkOut';
 const headCells = [
     { id: 'title', label: 'Title' },
     { id: 'duration', label: 'Duration' },
@@ -11,8 +13,9 @@ const headCells = [
 
 ]
 export default function ViewAllWorkOuts() {
-
+  
     const [records, setRecords] = useState()
+    const [equipments, setEquipments] = useState()
     const [loading, setLoading] = useState(false)
     const [openPopup, setOpenPopup] = useState(false)
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -27,7 +30,7 @@ export default function ViewAllWorkOuts() {
     const getAllClasses = async() => {
         let list=[]
         setLoading(true)
-        const querySnapshot =await getService("classes")
+        const querySnapshot =await getService("workOuts")
 
         querySnapshot.forEach((doc) => {
         
@@ -45,8 +48,23 @@ export default function ViewAllWorkOuts() {
         setRecordForEdit('')
         setOpenPopup(!openPopup)
     }
+
+    const getAllProducts = async() => {
+      let list=[]
+      setLoading(true)
+      const querySnapshot =await getService("shop")
+
+      querySnapshot.forEach((doc) => {
+        list.push({id:doc.id,
+            value:doc.data().name,
+            ...doc.data()})
+              });
+      setEquipments(list)
+      setLoading(false)
+          };
     useEffect(()=>{
        getAllClasses()
+       getAllProducts()
        },[ ])
       
       const deleteProduct = async (id,url) => {
@@ -96,10 +114,29 @@ export default function ViewAllWorkOuts() {
       headCells={headCells}
       viewDetailsButton={true}
       updateStatus={updateStatus}
-      searchBar={true}
+      searchBar={false}
+      addNew={true}
       path="Classes"
 
+
 />
+<Popup
+              title="Product"
+              openPopup={openPopup}
+            //   setOpenPopup={setOpenPopup}
+              handleModal={handleModal}
+
+          >
+        <AddWorkOut
+                         records={records}
+                         equipments={equipments}
+                         setRecords={setRecords}
+                         handleModal={handleModal}
+                         getAllProducts={getAllClasses}
+                         recordForEdit={recordForEdit}
+        />
+
+          </Popup>
 
 </>
 :<></>

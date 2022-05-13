@@ -28,28 +28,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "50px",
   },
 }));
-const quantity = {
-  1: "1",
-  2: "2",
-  3: "3",
-  4: "4",
-  5: "5",
-  6: "6",
-  7: "7",
-  8: "8",
-  9: "9",
-  10: "10",
-};
-const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => {
+
+const AddWorkOut = ({ recordForEdit, records,  handleModal,getAllProducts,equipments }) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
   const INITIAL_FORM_STATE = {
     name: "",
-    price: "",
-    discountPrice: "",
-    quantity: "",
     description: "",
+    duration:"",
     colors: [" "],
     file: null,
     imageUrl: "",
@@ -160,23 +147,18 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                 const record = {
                   colors: values.colors,
                   description: values.description,
+                  duration:values.duration,
                   image: downloadURL,
-                  likedBy: [],
                   name: values.name,
-                  numberOfViews: [],
-                  price: values.price,
-                  quantity: values.quantity,
-                  rating: 3,
-                  discountPrice: values.discountPrice,
                   file: filedata,
                 };
                 if (recordForEdit) {
-                  await updateService("shop",recordForEdit.id,record)
+                  await updateService("workOuts",recordForEdit.id,record)
                   setloader(false);
                   handleModal();
                   getAllProducts()
                 } else {
-                  await postService("shop",record)
+                  await postService("workOuts",record)
                   setloader(false);
                   handleModal();
                   getAllProducts()
@@ -190,17 +172,12 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         const record = {
           colors: values.colors,
           description: values.description,
+          duration:values.duration,
           image: values.image,
-          likedBy: [],
           name: values.name,
-          numberOfViews: [],
-          price: values.price,
-          quantity: values.quantity,
-          rating: 3,
-          discountPrice: values.discountPrice,
           file: values.file,
         };
-        await updateService("shop",recordForEdit.id,record)
+        await updateService("workOuts",recordForEdit.id,record)
         setloader(false);
         handleModal();
         getAllProducts()
@@ -226,25 +203,19 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                 initialValues={{
                   ...initialValues,
                 }}
-                validationSchema={FORM_VALIDATION}
+                // validationSchema={FORM_VALIDATION}
                 onSubmit={(values) => handelclick(values)}
                 render={({ values, errors, touched,submitForm}) => (
                   <Form>
+                      {console.log('valuesgggg',values)}
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
                         <Textfield name="name" label="Name" size="small" />
                       </Grid>
-                      <Grid item xs={3}>
-                        <Textfield name="price" label="Price" size="small" />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Textfield
-                          name="discountPrice"
-                          label="Discount Price"
-                          size="small"
-                        />
-                      </Grid>
                       <Grid item xs={6}>
+                        <Textfield name="duration" label="Duration" size="small" />
+                      </Grid>
+                      <Grid item xs={12}>
                         <Textfield
                           name="description"
                           label="Description"
@@ -254,14 +225,6 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                         />
                       </Grid>
 
-                      <Grid item xs={6}>
-                        <Select
-                          name="quantity"
-                          label="Quantity"
-                          size="small"
-                          options={quantity}
-                        />
-                      </Grid>
 
                       <Grid item xs={12}>
                         <FieldArray
@@ -276,13 +239,14 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                                     style={{ marginBottom: "10px" }}
                                   >
                                     {values.colors.map((friend, index) => (
-                                      <Grid item xs={4}>
+                                      <Grid item xs={6}>
                                         <div key={index}>
-                                          <Textfield
-                                            name={`colors.${index}`}
-                                            label="color"
-                                            size="small"
-                                          />
+                                        <Select
+                                              name={`colors.${index}`}
+                                              label="WorkOuts"
+                                              size="small"
+                                              options={equipments}
+                                            />
                                         </div>
                                       </Grid>
                                     ))}
@@ -378,4 +342,4 @@ const FormikForm = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
   );
 };
 
-export default FormikForm;
+export default AddWorkOut;

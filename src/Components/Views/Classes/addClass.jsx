@@ -1,13 +1,13 @@
 
 import React, { useEffect, useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Paper} from "@material-ui/core";
 import {storage } from "../../../config/Firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import ActionButton from "../../UI/controls/ActionButton";
-import { postService, updateService } from "../../../services/services";
+import {  updateService } from "../../../services/services";
 import { doc ,getDoc} from "firebase/firestore"; 
 import {db} from "../../../config/Firebase/firebase"
 import Textfield from "../../UI/Textfield";
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 // const workOuts=[{id:1,value:'firstWorkOUt'},{id:2,value:'secondWorkOut'},{id:3,value:'thirdWorkOut'}]
 const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOuts}) => {
   const [editMode, setEditMode] = useState(false);
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
+  // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
   const INITIAL_FORM_STATE = {
     title: "",
     description:"",
@@ -48,89 +48,89 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
     error: null,
   };
 
-  let FORM_VALIDATION = "";
+  // let FORM_VALIDATION = "";
 
-  if (editMode) {
-    FORM_VALIDATION = Yup.object().shape({
-      title: Yup.string()
-        .typeError("Please enter a valid phone number")
-        .required("Required"),
-        description: Yup.string().required("Required"),
-        category: Yup.string().required("Required"),
-        shedule:Yup.array(
-          Yup.object({
-            startTime: Yup.string()
-              .required('Ingredient name needed'),
-              // .min(3, 'Ingredient name needs to be at least 3 characters')
-              // .max(
-              //   10,
-              //   'Ingredient name needs to be at most 10 characters'
-              // ),
-            endTime: Yup.number()
-              .required('Quantity needed')
-              // .min(1, 'Quantity needs to be at least 1%')
-              // .max(100, 'Quantity can be at most 100%'),
-          })
-        )
-          .min(1, 'You need to provide at least 1 startTime')
-          .max(3, 'You can only provide 3 startTime'),
-          workOuts: Yup.array()
-          .of(
-            Yup.string("String is Required!")
-              .min(4, "Too Short")
-              .max(20, "Too Long")
-              .required("Required")
-          )
-          .min(1, "Atleast One Social Media is Required!")
-          .required("Required"),
+  // if (editMode) {
+  //   FORM_VALIDATION = Yup.object().shape({
+  //     title: Yup.string()
+  //       .typeError("Please enter a valid phone number")
+  //       .required("Required"),
+  //       description: Yup.string().required("Required"),
+  //       category: Yup.string().required("Required"),
+  //       shedule:Yup.array(
+  //         Yup.object({
+  //           startTime: Yup.string()
+  //             .required('Ingredient name needed'),
+  //             // .min(3, 'Ingredient name needs to be at least 3 characters')
+  //             // .max(
+  //             //   10,
+  //             //   'Ingredient name needs to be at most 10 characters'
+  //             // ),
+  //           endTime: Yup.number()
+  //             .required('Quantity needed')
+  //             // .min(1, 'Quantity needs to be at least 1%')
+  //             // .max(100, 'Quantity can be at most 100%'),
+  //         })
+  //       )
+  //         .min(1, 'You need to provide at least 1 startTime')
+  //         .max(3, 'You can only provide 3 startTime'),
+  //         workOuts: Yup.array()
+  //         .of(
+  //           Yup.string("String is Required!")
+  //             .min(4, "Too Short")
+  //             .max(20, "Too Long")
+  //             .required("Required")
+  //         )
+  //         .min(1, "Atleast One Social Media is Required!")
+  //         .required("Required"),
 
-      // file: Yup.array()
-      //   .required("Required Field")
-    });
-  } else {
-    FORM_VALIDATION = Yup.object().shape({
-      title: Yup.string()
-      .typeError("Please enter a valid phone number")
-      .required("Required"),
-      description: Yup.string().required("Required"),
-      category: Yup.string().required("Required"),
-      shedule:Yup.array(
-        Yup.object({
-          startTime: Yup.string()
-            .required('Ingredient name needed')
-            .min(3, 'Ingredient name needs to be at least 3 characters')
-            .max(
-              10,
-              'Ingredient name needs to be at most 10 characters'
-            ),
-          endTime: Yup.number()
-            .required('Quantity needed'),
-            // .min(1, 'Quantity needs to be at least 1%')
-            // .max(100, 'Quantity can be at most 100%'),
-        })
-      )
-        .min(1, 'You need to provide at least 1 startTime')
-        .max(3, 'You can only provide 3 startTime'),
-        workOuts: Yup.array()
-        .of(
-          Yup.string("String is Required!")
-            .min(4, "Too Short")
-            .max(20, "Too Long")
-            .required("Required")
-        )
-        .min(1, "Atleast One Social Media is Required!")
-        .required("Required"),
-      file: Yup.mixed()
-        .nullable()
-        .required("Required Field")
-        .test(
-          "type",
-          "Invalid file format selection",
-          (value) =>
-            !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
-        ),
-    });
-  }
+  //     // file: Yup.array()
+  //     //   .required("Required Field")
+  //   });
+  // } else {
+  //   FORM_VALIDATION = Yup.object().shape({
+  //     title: Yup.string()
+  //     .typeError("Please enter a valid phone number")
+  //     .required("Required"),
+  //     description: Yup.string().required("Required"),
+  //     category: Yup.string().required("Required"),
+  //     shedule:Yup.array(
+  //       Yup.object({
+  //         startTime: Yup.string()
+  //           .required('Ingredient name needed')
+  //           .min(3, 'Ingredient name needs to be at least 3 characters')
+  //           .max(
+  //             10,
+  //             'Ingredient name needs to be at most 10 characters'
+  //           ),
+  //         endTime: Yup.number()
+  //           .required('Quantity needed'),
+  //           // .min(1, 'Quantity needs to be at least 1%')
+  //           // .max(100, 'Quantity can be at most 100%'),
+  //       })
+  //     )
+  //       .min(1, 'You need to provide at least 1 startTime')
+  //       .max(3, 'You can only provide 3 startTime'),
+  //       workOuts: Yup.array()
+  //       .of(
+  //         Yup.string("String is Required!")
+  //           .min(4, "Too Short")
+  //           .max(20, "Too Long")
+  //           .required("Required")
+  //       )
+  //       .min(1, "Atleast One Social Media is Required!")
+  //       .required("Required"),
+  //     file: Yup.mixed()
+  //       .nullable()
+  //       .required("Required Field")
+  //       .test(
+  //         "type",
+  //         "Invalid file format selection",
+  //         (value) =>
+  //           !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
+  //       ),
+  //   });
+  // }
   const initialValues = recordForEdit ? recordForEdit : INITIAL_FORM_STATE;
   const [loader, setloader] = useState(false);
 

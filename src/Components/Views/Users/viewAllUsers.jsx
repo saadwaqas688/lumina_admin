@@ -17,8 +17,6 @@ export default function ViewAllUsers() {
 
     const [records, setRecords] = useState()
     const [loading, setLoading] = useState(false)
-    const [openPopup, setOpenPopup] = useState(false)
-    const [recordForEdit, setRecordForEdit] = useState(null)
     const handelFetch = async() => {
         setLoading(true)
         let list=[];      
@@ -39,13 +37,6 @@ export default function ViewAllUsers() {
       
       };
 
-
-      function handleModal(){
-        setRecordForEdit('')
-        setOpenPopup(!openPopup)
-    
-    
-    }
     useEffect(()=>{
         // if(!openPopup){
         handelFetch()
@@ -83,9 +74,6 @@ export default function ViewAllUsers() {
     
     <Table records={records} 
     
-    setOpenPopup={setOpenPopup} 
-    //   openPopup={openPopup}
-      setRecordForEdit={setRecordForEdit}
       headCells={headCells}
       viewDetailsButton={true}
       editButton={false}

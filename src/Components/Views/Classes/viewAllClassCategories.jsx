@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react'
-import AddClass from './addClass';
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../UI/PageWrapper/PageWrapper';
 import { deleteAsset, deleteService, getService } from '../../../services/services';

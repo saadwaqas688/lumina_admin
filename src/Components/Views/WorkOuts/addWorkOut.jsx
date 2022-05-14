@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Paper } from "@material-ui/core";
 import Textfield from "../../UI/Textfield";
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddWorkOut = ({ recordForEdit, records,  handleModal,getAllProducts,equipments }) => {
   const [editMode, setEditMode] = useState(false);
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
+  // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
   const INITIAL_FORM_STATE = {
     name: "",
@@ -44,67 +44,67 @@ const AddWorkOut = ({ recordForEdit, records,  handleModal,getAllProducts,equipm
     error: null,
   };
 
-  let FORM_VALIDATION = "";
+  // let FORM_VALIDATION = "";
 
-  if (editMode) {
-    FORM_VALIDATION = Yup.object().shape({
-      name: Yup.string()
-        .typeError("Please enter a valid phone number")
-        .required("Required"),
-      price: Yup.number().integer().required("Required"),
-      discountPrice: Yup.number().integer().required("Required"), 
-      quantity: Yup.number()
-        .integer()
-        .typeError("Please enter a valid phone number")
-        .required("Required"),
+  // if (editMode) {
+  //   FORM_VALIDATION = Yup.object().shape({
+  //     name: Yup.string()
+  //       .typeError("Please enter a valid phone number")
+  //       .required("Required"),
+  //     price: Yup.number().integer().required("Required"),
+  //     discountPrice: Yup.number().integer().required("Required"), 
+  //     quantity: Yup.number()
+  //       .integer()
+  //       .typeError("Please enter a valid phone number")
+  //       .required("Required"),
 
-      description: Yup.string().required("Required"),
-      colors: Yup.array()
-        .of(
-          Yup.string("String is Required!")
-            .min(4, "Too Short")
-            .max(20, "Too Long")
-            .required("Required")
-        )
-        .min(1, "Atleast One Social Media is Required!")
-        .required("Required"),
+  //     description: Yup.string().required("Required"),
+  //     colors: Yup.array()
+  //       .of(
+  //         Yup.string("String is Required!")
+  //           .min(4, "Too Short")
+  //           .max(20, "Too Long")
+  //           .required("Required")
+  //       )
+  //       .min(1, "Atleast One Social Media is Required!")
+  //       .required("Required"),
 
-      // file: Yup.array()
-      //   .required("Required Field")
-    });
-  } else {
-    FORM_VALIDATION = Yup.object().shape({
-      name: Yup.string()
-        .typeError("Please enter a valid phone number")
-        .required("Required"),
-      price: Yup.number().integer().required("Required"),
-      discountPrice: Yup.number().integer().required("Required"), 
-      quantity: Yup.number()
-        .integer()
-        .typeError("Please enter a valid phone number")
-        .required("Required"),
+  //     // file: Yup.array()
+  //     //   .required("Required Field")
+  //   });
+  // } else {
+  //   FORM_VALIDATION = Yup.object().shape({
+  //     name: Yup.string()
+  //       .typeError("Please enter a valid phone number")
+  //       .required("Required"),
+  //     price: Yup.number().integer().required("Required"),
+  //     discountPrice: Yup.number().integer().required("Required"), 
+  //     quantity: Yup.number()
+  //       .integer()
+  //       .typeError("Please enter a valid phone number")
+  //       .required("Required"),
 
-      description: Yup.string().required("Required"),
-      colors: Yup.array()
-        .of(
-          Yup.string("String is Required!")
-            .min(4, "Too Short")
-            .max(20, "Too Long")
-            .required("Required")
-        )
-        .min(1, "Atleast One Social Media is Required!")
-        .required("Required"),
-      file: Yup.mixed()
-        .nullable()
-        .required("Required Field")
-        .test(
-          "type",
-          "Invalid file format selection",
-          (value) =>
-            !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
-        ),
-    });
-  }
+  //     description: Yup.string().required("Required"),
+  //     colors: Yup.array()
+  //       .of(
+  //         Yup.string("String is Required!")
+  //           .min(4, "Too Short")
+  //           .max(20, "Too Long")
+  //           .required("Required")
+  //       )
+  //       .min(1, "Atleast One Social Media is Required!")
+  //       .required("Required"),
+  //     file: Yup.mixed()
+  //       .nullable()
+  //       .required("Required Field")
+  //       .test(
+  //         "type",
+  //         "Invalid file format selection",
+  //         (value) =>
+  //           !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
+  //       ),
+  //   });
+  // }
   const initialValues = recordForEdit ? recordForEdit : INITIAL_FORM_STATE;
   const [loader, setloader] = useState(false);
 

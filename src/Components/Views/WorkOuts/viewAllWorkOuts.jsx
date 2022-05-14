@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Paper, Skeleton} from '@mui/material';
+import {Skeleton} from '@mui/material';
 import PageWrapper from '../../UI/PageWrapper/PageWrapper';
 import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
 import Table from '../../UI/Table/Table';

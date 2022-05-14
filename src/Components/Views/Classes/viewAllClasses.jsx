@@ -136,7 +136,7 @@ import React, { useEffect, useState } from 'react'
 import AddClass from './addClass';
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../UI/PageWrapper/PageWrapper';
-import { deleteAsset, deleteService, getService, postService } from '../../../services/services';
+import { deleteAsset, deleteService, getService} from '../../../services/services';
 import Popup from '../../UI/Popup/Popup';
 import Table from '../../UI/Table/Table';
 const headCells = [
@@ -185,15 +185,7 @@ export default function ViewAllClasses() {
       // }
 
    
-      const data= { className:'firstClass',
-                    classDescription:"firstClassDescription",
-                   shedule:[{start:'05/15/2022 09:00 pm',end:'05/15/2022 10:00 pm'},{start:'06/15/2022 09:00 pm',end:'06/15/2022 10:00 pm'}],
-                   workOuts:[
-                      {id:'1',name:'firstWorkOut',duration:'10min',equipments:['firstEquiment','secondEquiment']},
-                      {id:'2',name:'secondWorkOut',duration:'15min',equipments:['firstEquiment','secondEquiment']},
-                      {id:'3',name:'thirdWorkOut',duration:'20min',equipments:['firstEquiment','secondEquiment']},
-                      ]
-                }
+    
          
                 
       

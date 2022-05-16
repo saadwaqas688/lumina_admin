@@ -32,16 +32,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // 05/15/2022 09:00 pm
-// const workOuts=[{id:1,value:'firstWorkOUt'},{id:2,value:'secondWorkOut'},{id:3,value:'thirdWorkOut'}]
-const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOuts}) => {
+// const categories=[{id:'1'},{id:'2'},{id:'3'}]
+// const equipments=[{id:'1'},{id:'2'},{id:'3'}]
+
+const FormikForm = ({ recordForEdit,handleModal,getAllProducts,equipments,categories}) => {
   const [editMode, setEditMode] = useState(false);
   // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
   const INITIAL_FORM_STATE = {
     title: "",
     description:"",
     category:"",
-    shedule: [{ startTime: '', endTime: '' }],
-    workOuts: [" "],
+    startingDate:"",
+    equipments: [" "],
     file: null,
     imageUrl: "",
     loader: false,
@@ -133,7 +135,9 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
   // }
   const initialValues = recordForEdit ? recordForEdit : INITIAL_FORM_STATE;
   const [loader, setloader] = useState(false);
-
+	const uniqueID = () => {
+		return Math.floor(Math.random() * Math.floor(Math.random() * Date.now()));
+	};
   const classes = useStyles();
   async function handelclick(values) {
     setloader(true);
@@ -170,19 +174,52 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
                 const record = {
+                  id:uniqueID(),
                   title: values.title,
                   image: downloadURL,
                   description:values.description,
+                  startingDate:values.startingDate,
+                  equipments:values.equipments,
+                  users:[],
                   category:values.category,
-                  shedule:values.shedule,
-                  workOuts: values.workOuts,
                   file: filedata,
                 };
                 if (recordForEdit) {
-                  await updateService("classCategories",recordForEdit.id,record)
+                  const docRef = doc(db, "classCategories", values.category.id);
+                  const docSnap = await getDoc(docRef);
+                  
+                  if (docSnap.exists()) {
+                  console.log("Document data viky:", docSnap.data());
+                   let data=[]
+                   let list=docSnap.data()
+                   list.classes.map((item)=>{
+                      if(item.id===values.id){
+                        data.push(record)
+                      }else{
+                        data.push(item)
+                      }
+                    })
+                     list.classes=data
+                    // list.classes[index]=record
+                    await updateService("classCategories",values.category.id,list)
+                    // console.log("Document data firday:", docSnap.data());
+                    // setData(docSnap.data())
+                    // setLoading(false)
+              
+                  } else {
+                    console.log("No such document!");
+                    // setLoading(false)
+                  }
+                  // await updateService("test",recordForEdit.id,record)
+                  // await postService(`test/${values.category.id}/class`,record)
                   setloader(false);
                   handleModal();
                   getAllProducts()
+                  
+                  // await updateService("classCategories",recordForEdit.id,record)
+                  // setloader(false);
+                  // handleModal();
+                  // getAllProducts()
                 } else {
                   const docRef = doc(db, "classCategories", values.category.id);
                   const docSnap = await getDoc(docRef);
@@ -214,14 +251,43 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
         );
       } else {
         const record = {
+          id:values.id,
           title: values.title,
+          image: values.image,
           description: values.description,
           category:values.category,
-          shedule:values.shedule,
-          workOuts: values.workOuts,
+          equipments:values.equipments,
+          users:[],
+          startingDate:values.startingDate,
           file: values.file,
         };
-        await updateService("test",recordForEdit.id,record)
+
+        const docRef = doc(db, "classCategories", values.category.id);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+        console.log("Document data viky:", docSnap.data());
+         let data=[]
+         let list=docSnap.data()
+         list.classes.map((item)=>{
+            if(item.id===values.id){
+              data.push(record)
+            }else{
+              data.push(item)
+            }
+          })
+           list.classes=data
+          // list.classes[index]=record
+          await updateService("classCategories",values.category.id,list)
+          // console.log("Document data firday:", docSnap.data());
+          // setData(docSnap.data())
+          // setLoading(false)
+    
+        } else {
+          console.log("No such document!");
+          // setLoading(false)
+        }
+        // await updateService("classCategories",recordForEdit.id,record)
         setloader(false);
         handleModal();
         getAllProducts()
@@ -236,6 +302,7 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
       setEditMode(true);
     }
   }, [recordForEdit]);
+
 
   return (
     <Paper className={classes.formWrapper}>
@@ -254,8 +321,11 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
                   {console.log(values)}
                   <Form>
                     <Grid container spacing={2}>
-                      <Grid item xs={12}>
+                      <Grid item xs={6}>
                         <Textfield name="title" label="Title" size="small" />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Textfield name="startingDate" label="Starting Date" size="small" />
                       </Grid>
                       <Grid item xs={6}>
                         <Select
@@ -274,97 +344,26 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
                           minRows={4}
                         />
                       </Grid>
-
                       <Grid item xs={12}>
                         <FieldArray
-                          name="shedule"
+                          name="equipments"
                           render={(arrayHelpers) => (
                             <div>
-                              {values.shedule && values.shedule.length > 0 && (
+                              {values.equipments && values.equipments.length > 0 && (
                                 <>
                                   <Grid
                                     container
                                     spacing={2}
                                     style={{ marginBottom: "10px" }}
                                   >
-                                    {values.shedule.map((friend, index) => (
-                                      <>
+                                    {values.equipments.map((friend, index) => (
                                       <Grid item xs={6}>
                                         <div key={index}>
-                                          <Textfield
-                                           name={`shedule.${index}.startTime`}
-                                           label="Start Time"
-                                            size="small"
-                                          />
-                                        </div>
-                                      </Grid>
-                                       <Grid item xs={6}>
-                                       <div key={index}>
-                                         <Textfield
-                                           name={`shedule[${index}].endTime`}
-                                           label="End Time"
-                                           size="small"
-                                         />
-                                       </div>
-                                     </Grid>
-                                     </>
-                                    ))}
-                                  </Grid>
-                                </>
-                              )}
-                              <>
-                                {values.shedule.length > 1 && (
-                                  <ActionButton  style={{ marginRight: "10px" }}
-                                  variant="contained"  color="primary" size='small'
-                                     onClick={() =>
-                                      arrayHelpers.remove(
-                                        values.shedule.length - 1
-                                      )
-                                    } 
-                                   >
-                                       Remove Class
-                                    </ActionButton>
-                                )}
-                                  <ActionButton variant="contained"  color="primary"  
-                                    size='small'
-                                     onClick={() =>
-                                    arrayHelpers.insert(
-                                      values.shedule.length,
-                                      ""
-                                    )
-                                  } >
-                                       Add Class
-                                    </ActionButton>
-                              </>
-                            </div>
-                          )}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FieldArray
-                          name="workOuts"
-                          render={(arrayHelpers) => (
-                            <div>
-                              {values.workOuts && values.workOuts.length > 0 && (
-                                <>
-                                  <Grid
-                                    container
-                                    spacing={2}
-                                    style={{ marginBottom: "10px" }}
-                                  >
-                                    {values.workOuts.map((friend, index) => (
-                                      <Grid item xs={6}>
-                                        <div key={index}>
-                                          {/* <Textfield
-                                            name={`workOuts.${index}`}
-                                            label="color"
-                                            size="small"
-                                          /> */}
-                                            <Select
-                                              name={`workOuts.${index}`}
-                                              label="WorkOuts"
+                                        <Select
+                                              name={`equipments.${index}`}
+                                              label="Equipment"
                                               size="small"
-                                              options={workOuts}
+                                              options={equipments}
                                             />
                                         </div>
                                       </Grid>
@@ -373,48 +372,27 @@ const FormikForm = ({ recordForEdit,handleModal,getAllProducts,categories,workOu
                                 </>
                               )}
                               <>
-                                {values.workOuts.length > 1 && (
-                                  // <FormButton
-                                  //   style={{ marginRight: "10px" }}
-                                  //   color="secondary"
-                                  //   onClick={() =>
-                                  //     arrayHelpers.remove(
-                                  //       values.workOuts.length - 1
-                                  //     )
-                                  //   }
-                                  // >
-                                  //   Remove color
-                                  // </FormButton>
+                                {values.equipments.length > 1 && (
                                   <ActionButton  style={{ marginRight: "10px" }}
                                   variant="contained"  color="primary" size='small'
                                      onClick={() =>
                                       arrayHelpers.remove(
-                                        values.workOuts.length - 1
+                                        values.equipments.length - 1
                                       )
                                     } 
                                    >
-                                       Remove WorkOut
+                                       Remove Equipment
                                     </ActionButton>
                                 )}
-                                {/* <FormButton
-                                  onClick={() =>
-                                    arrayHelpers.insert(
-                                      values.workOuts.length,
-                                      ""
-                                    )
-                                  }
-                                >
-                                  Add Color
-                                </FormButton> */}
                                   <ActionButton variant="contained"  color="primary"  
                                     size='small'
                                      onClick={() =>
                                     arrayHelpers.insert(
-                                      values.workOuts.length,
+                                      values.equipments.length,
                                       ""
                                     )
                                   } >
-                                       Add WorkOut
+                                       Add Equipment
                                     </ActionButton>
                               </>
                             </div>

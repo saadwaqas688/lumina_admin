@@ -91,8 +91,8 @@ export default function Table({records,
         setPage(0)
     },[searchTerm])
 
-    const openInPopup = item => {
-        setRecordForEdit(item)
+    const openInPopup = record => {
+        setRecordForEdit(record)
         setOpenPopup(true)
     }
   
@@ -236,7 +236,7 @@ export default function Table({records,
                                         <DeleteIcon
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => { handelDelete(item.id,assetUrl) }}  
+                                        onClick={() => { handelDelete(item,assetUrl) }}  
                                          />
                                  }
                                     </TableCell>

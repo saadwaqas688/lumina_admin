@@ -40,7 +40,8 @@ const SelectWrapper = ({
       })} */}
            {options.map((item) => {
         return (
-          <MenuItem key={item.id} value={item}>
+          
+          <MenuItem key={item.id} value={item} selected={item.value=="Youga"?true:false} >
             {item.value}
           </MenuItem>
         )

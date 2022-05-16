@@ -47,14 +47,14 @@ export default function ViewAllClassCategories() {
         // }
        },[ ])
       
-      const deleteProduct = async (id,url) => {
+      const deleteProduct = async (record,url) => {
         console.log('ViewAllProducts',url)
         
-        await deleteService("classCategories",id)
+        await deleteService("classCategories",record.id)
         if(url){
           deleteAsset(url)
         }
-        const result =records.filter((item)=>item.id!==id)
+        const result =records.filter((item)=>item.id!==record.id)
         setRecords(result)
       };
     return (

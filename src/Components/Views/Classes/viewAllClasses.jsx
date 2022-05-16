@@ -136,9 +136,11 @@ import React, { useEffect, useState } from 'react'
 import AddClass from './addClass';
 import {Skeleton} from '@mui/material';
 import PageWrapper from '../../UI/PageWrapper/PageWrapper';
-import { deleteAsset, deleteService, getService} from '../../../services/services';
+import { deleteAsset, deleteService, getService, updateService} from '../../../services/services';
 import Popup from '../../UI/Popup/Popup';
 import Table from '../../UI/Table/Table';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../config/Firebase/firebase';
 const headCells = [
     { id: 'title', label: 'Title' },
     { id: 'price', label: 'Price' },
@@ -150,6 +152,7 @@ const headCells = [
 export default function ViewAllClasses() {
   
     const [workOuts, setWorkOuts] = useState()
+    const [equipments, setEquipments] = useState()
     const [records, setRecords] = useState()
     const [categories, setCategories] = useState()
     const [loading, setLoading] = useState(false)
@@ -202,14 +205,24 @@ export default function ViewAllClasses() {
               ...doc.data()})
                 });
 
-                list[0].classes.forEach((item) => {
-                  newList.push({id:item.id,firstValue:item.title,
+                // list[0].classes.forEach((item) => {
+                //   newList.push({id:item.id,firstValue:item.title,
         
-                      ...item})
-                        });
+                //       ...item})
+                //         });
+                list.map((item)=>{
+                  return(
+                 item.classes.map((item)=> {
+                   return(
+                    item.firstValue=item.title,
+                    item.secondValue=item.category.value,
+                    newList.push(item)
+                   )
+                  }))
+                })
 
 
-                console.log('allClasses',list)
+                console.log('allClasses+++++====',list)
 
         setRecords(newList)
         setLoading(false)
@@ -242,32 +255,54 @@ export default function ViewAllClasses() {
                             setWorkOuts(list)
                     setLoading(false)
                         };
-
+                        const getAllProducts = async() => {
+                          let list=[]
+                          setLoading(true)
+                          const querySnapshot =await getService("shop")
+                    
+                          querySnapshot.forEach((doc) => {
+                            list.push({id:doc.id,
+                                value:doc.data().name,
+                                ...doc.data()})
+                                  });
+                          setEquipments(list)
+                          setLoading(false)
+                              };
 
       function handleModal(){
         setRecordForEdit('')
         setOpenPopup(!openPopup)
     }
     useEffect(()=>{
-        // if(!openPopup){
-
 
 
        getAllClasses()
        getAllClassCategories()
-       getAllWorkOuts()
-        // }
+       getAllProducts()
+      
        },[ ])
       
-      const deleteProduct = async (id,url) => {
-        console.log('ViewAllProducts',url)
+      const deleteClass = async (item,url) => {
+        const docRef = doc(db, "classCategories", item.category.id);
+        const docSnap = await getDoc(docRef);
         
-        await deleteService("shop",id)
+        if (docSnap.exists()) {
+        console.log("Document data viky: from viewallcallsses", docSnap.data());
+
+          let list=docSnap.data()
+         list.classes = list.classes.filter((i)=>i.id!==item.id);
+          await updateService("classCategories",item.category.id,list)
+            const result =records.filter((i)=>i.id!==item.id)
+            setRecords(result)
+    
+        } else {
+          console.log("No such document!");
+          // setLoading(false)
+        }        
         if(url){
           deleteAsset(url)
         }
-        const result =records.filter((item)=>item.id!==id)
-        setRecords(result)
+     
       };
 
       console.log('records meray records',records)
@@ -284,13 +319,13 @@ export default function ViewAllClasses() {
     </>
 ):
 
-    records  && categories && workOuts ?
+    records  && categories ?
     <>
     <Table records={records} 
     
     setOpenPopup={setOpenPopup} 
       setRecordForEdit={setRecordForEdit}
-      handelDelete={deleteProduct}
+      handelDelete={deleteClass}
       headCells={headCells}
       viewDetailsButton={true}
       editButton={true}
@@ -316,7 +351,10 @@ export default function ViewAllClasses() {
                          setRecords={setRecords}
                          handleModal={handleModal}
                          getAllProducts={getAllClasses}
-                         recordForEdit={recordForEdit}
+                         recordForEdit={recordForEdit && recordForEdit.item}
+                         index={recordForEdit && recordForEdit.index}
+                         equipments={equipments}
+
         />
 
           </Popup>

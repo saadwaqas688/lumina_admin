@@ -43,15 +43,15 @@ export default function ViewAllMeals() {
         // }
        },[ ])
       
-      const deleteProduct = async (id,url) => {
+      const deleteProduct = async (record,url) => {
         console.log('ViewAllProducts',url)
         
-        await deleteService("shop",id)
+        await deleteService("shop",record.id)
         if(url){
           deleteAsset(url)
         }
-        await deleteService("meal",id)
-        const result =records.filter((item)=>item.id!==id)
+        await deleteService("meal",record.id)
+        const result =records.filter((item)=>item.id!==record.id)
         setRecords(result)
       };
 

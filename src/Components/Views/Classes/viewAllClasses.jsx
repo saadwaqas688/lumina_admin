@@ -283,6 +283,7 @@ export default function ViewAllClasses() {
        },[ ])
       
       const deleteClass = async (item,url) => {
+        console.log('itemformviewlallclasses',item)
         const docRef = doc(db, "classCategories", item.category.id);
         const docSnap = await getDoc(docRef);
         
@@ -351,8 +352,7 @@ export default function ViewAllClasses() {
                          setRecords={setRecords}
                          handleModal={handleModal}
                          getAllProducts={getAllClasses}
-                         recordForEdit={recordForEdit && recordForEdit.item}
-                         index={recordForEdit && recordForEdit.index}
+                         recordForEdit={recordForEdit}
                          equipments={equipments}
 
         />
